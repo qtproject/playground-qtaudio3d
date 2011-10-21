@@ -19,6 +19,8 @@
 
 #include "q_openal_export.h"
 
+#include "qalattributes.h"
+
 class Q_OPENAL_EXPORT QALContext
 {
     //Q_DECLARE_PRIVATE(QALContext)
@@ -40,6 +42,12 @@ public:
      * @return True if the operation was successful; otherwise false
      */
     virtual bool create();
+
+    /**
+     * Returns the attributes that the application requested, and what create()
+     * will use to create the device/context with
+     */
+    QALAttributes requestedAttributes() const;
 
     /**
      * Checks whether or not the context is valid.

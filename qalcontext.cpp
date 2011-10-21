@@ -62,6 +62,11 @@ QALContext::create(const QALContext* shareContext)
 {
 }
 
+QALAttributes
+requestedAttributes() const
+{
+}
+
 bool
 QALContext::isValid() const
 {
