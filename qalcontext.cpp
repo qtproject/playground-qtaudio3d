@@ -91,6 +91,7 @@ QALContext::makeCurrent()
 bool
 QALContext::doneCurrent()
 {
+    return alcMakeContextCurrent(0);
 }
 
 ALuint
