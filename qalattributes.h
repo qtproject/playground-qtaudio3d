@@ -19,6 +19,8 @@
 
 #include "q_openal_export.h"
 
+#include <QtCore/QString>
+
 class Q_OPENAL_EXPORT QALAttributes
 {
     //Q_DECLARE_PRIVATE(QALAttribues)
@@ -26,10 +28,37 @@ public:
     QALAttributes();
     virtual ~QALAttributes();
 
+    /*!
+      Returns the default QALAttributes for the application. All QALContext
+      objects that are created use these attributes unless another format is
+      specified, e.g. when they are constructed.
+
+      If no special default attributes has been set using
+      setDefaultAttributes(), the default format is the same as that created
+      with QALAttributes().
+
+      \sa setDefaultAttributes()
+      */
+    static QALAttributes defaultAttributes();
+
+    /*!
+      Sets a new default QALAttributes for the application to \a attributes.
+
+      \sa defaultAttributes()
+      */
+    static void setDefaultAttributes(const QALAttributes& attributes); 
+
     int frequency() const;
     int monoSources() const;
+    int stereoSources() const;
+    bool sync() const;
+    int refresh() const
+    QString deviceSpecifier() const;
 
     void setFrequency(int frequency);
     void setMonoSources(int monoSources);
-
+    void setStereoSources(int stereoSources);
+    void setSync(bool sync);
+    void setRefresh(int refresh);
+    void setDeviceSpecifier(const QString& deviceSpecifier);
 };

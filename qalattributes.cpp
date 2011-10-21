@@ -19,12 +19,48 @@
 
 #include "qalattributes.h"
 
+class QALAttributes::Private
+{
+    public:
+        Private()
+            : frequence(48000)
+            , monoSource(255)
+            , stereoSource(1)
+            , sync(false)
+            , refresh(45)
+        {   
+        }   
+
+        ~Private()
+        {   
+        }   
+
+        int frequence;
+        int monoSource;
+        int stereoSource;
+        bool sync;
+        int refresh;
+        QString deviceSpecifier;
+};
+
 QALAttributes::QALAttributes()
 {
 }
 
 QALAttributes::~QALAttributes()
 {
+}
+
+QALAttributes
+QALAttributes::defaultFormat()
+{
+    return *qgl_default_attributes();
+}
+
+void
+QGLFormat::setDefaultFormat(const QALAttributes &attributes)
+{
+    *qgl_default_attributes() = attributes; 
 }
 
 int
@@ -39,6 +75,30 @@ QALAttributes::monoSources() const
     d->monoSources;
 }
 
+int
+QALAttributes::stereoSources() const
+{
+    d->stereoSources;
+}
+
+bool
+QALAttributes::sync() const
+{
+    d->sync;
+}
+
+int
+QALAttributes::refresh() const
+{
+    d->refresh;
+}
+
+QString
+QALAttributes::deviceSpecifier() const
+{
+    d->deviceSpecifier;
+}
+
 void
 QALAttributes::setFrequency(int frequency)
 {
@@ -49,5 +109,35 @@ void
 QALAttributes::setMonoSources(int monoSources)
 {
     d->monoSources = monoSources;
+}
+
+void
+QALAttributes::setStereoSources(int stereoSources)
+{
+    d->stereoSources = stereoSources;
+}
+
+void
+QALAttributes::setDeviceSpecifier(const QString &deviceSpecifier)
+{
+    d->deviceSpecifier = deviceSpecifier;
+}
+
+void
+QALAttributes::setSync(bool sync)
+{
+    d->sync = sync;
+}
+
+void
+QALAttributes::setRefresh(int refresh)
+{
+    d->refresh = refresh;
+}
+
+void
+QALAttributes::setDeviceSpecifier(const QString &deviceSpecifier)
+{
+    d->deviceSpecifier = deviceSpecifier;
 }
 
