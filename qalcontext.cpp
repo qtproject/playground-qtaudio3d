@@ -60,6 +60,14 @@ QALContext::~QALContext()
 bool
 QALContext::create()
 {
+    // Open the default device
+    if (d->alcDevice = alcOpenDevice(NULL) == false)
+        return false;
+
+    if ((d->alcContext = alcCreateContext(d->alcDevice, NULL)) == 0)
+        return false;
+
+    return true;
 }
 
 QALAttributes
