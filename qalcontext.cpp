@@ -19,6 +19,36 @@
 
 #include "qalcontext.h"
 
+#if !defined(ALC_VERSION_0_1) || !defined(AL_VERSION_1_0)
+#ifdef _WIN32
+#include <al.h>
+#include <alc.h>
+#elif defined(__APPLE__)
+#include <OpenAL/alc.h>
+#include <OpenAL/al.h>
+#else
+#include <AL/al.h>
+#include <AL/alc.h>
+#endif
+#endif
+
+class QALContext::Private
+{
+    public:
+        Private()
+            : alcDevice(0)
+            , alcContext(0)
+        {
+        }
+
+        ~Private()
+        {
+        }
+
+        ALCDevice *alcDevice;
+        ALCContext *alcContext;
+};
+
 QALContext::QALContext()
 {
 }

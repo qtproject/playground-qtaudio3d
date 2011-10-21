@@ -23,7 +23,14 @@ class Q_OPENAL_EXPORT QALContext
 {
     //Q_DECLARE_PRIVATE(QALContext)
 public:
+    /**
+     * Constructor
+     */
     QALContext();
+
+    /**
+     * Desctructor
+     */
     virtual ~QALContext();
 
     /**
@@ -63,12 +70,23 @@ public:
     /**
      * Generates a buffer, opens the file with the audio decoder and then loads
      * the sound into it
+     *
+     * @param filename The file to open
      */
     ALuint cacheBuffer(const QString& filename);
-    QALBufferQueue streamBuffer();
+
+    /**
+     * Uses a QALBufferQueue to hold multiple buffers that get little portions
+     * of the audio instead of loading the sound fully into a buffer
+     */
+    QALBufferQueue streamBuffer(const QString& filename);
 
     /**
      * Calls alcGetProcAddress with the opened device
      */
-    void *getProcAddress(const QString &proc) const;
+    void *getProcAddress(const QString &proc) const;q
+
+    private:
+        class Private;
+        Private *const d;
 };
