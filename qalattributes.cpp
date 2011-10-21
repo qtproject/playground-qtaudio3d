@@ -19,15 +19,15 @@
 
 #include "qalattributes.h"
 
-Q_GLOBAL_STATIC(QALFormat, qal_default_format)
+Q_GLOBAL_STATIC(QALAttributes, qal_default_attributes)
 
 class QALAttributes::Private
 {
     public:
         Private()
-            : frequence(48000)
-            , monoSource(255)
-            , stereoSource(1)
+            : frequency(48000)
+            , monoSources(255)
+            , stereoSources(1)
             , sync(false)
             , refresh(45)
         {   
@@ -37,15 +37,16 @@ class QALAttributes::Private
         {   
         }   
 
-        int frequence;
-        int monoSource;
-        int stereoSource;
+        int frequency;
+        int monoSources;
+        int stereoSources;
         bool sync;
         int refresh;
         QString deviceSpecifier;
 };
 
 QALAttributes::QALAttributes()
+    : d(new Private)
 {
 }
 
@@ -60,7 +61,7 @@ QALAttributes::defaultFormat()
 }
 
 void
-QGLFormat::setDefaultFormat(const QALAttributes &attributes)
+QALAttributes::setDefaultFormat(const QALAttributes &attributes)
 {
     *qal_default_attributes() = attributes; 
 }
@@ -68,7 +69,7 @@ QGLFormat::setDefaultFormat(const QALAttributes &attributes)
 int
 QALAttributes::frequency() const
 {
-    return d->frequence;
+    return d->frequency;
 }
 
 int
@@ -104,7 +105,7 @@ QALAttributes::deviceSpecifier() const
 void
 QALAttributes::setFrequency(int frequency)
 {
-    d->frequence = frequence;
+    d->frequency = frequency;
 }
 
 void
@@ -117,12 +118,6 @@ void
 QALAttributes::setStereoSources(int stereoSources)
 {
     d->stereoSources = stereoSources;
-}
-
-void
-QALAttributes::setDeviceSpecifier(const QString &deviceSpecifier)
-{
-    d->deviceSpecifier = deviceSpecifier;
 }
 
 void

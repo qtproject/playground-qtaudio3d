@@ -52,7 +52,7 @@ public:
     int monoSources() const;
     int stereoSources() const;
     bool sync() const;
-    int refresh() const
+    int refresh() const;
     QString deviceSpecifier() const;
 
     void setFrequency(int frequency);
@@ -61,4 +61,8 @@ public:
     void setSync(bool sync);
     void setRefresh(int refresh);
     void setDeviceSpecifier(const QString& deviceSpecifier);
+
+    private:
+        class Private;
+        Private *const d;
 };
