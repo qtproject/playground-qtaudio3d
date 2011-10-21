@@ -26,16 +26,49 @@ public:
     QALContext();
     virtual ~QALContext();
 
-    virtual bool create(const QALContext* shareContext = 0);
+    /**
+     * Opens the device, starts it in the context, and then creates the
+     * context accordingly
+     *
+     * @return True if the operation was successful; otherwise false
+     */
+    virtual bool create();
+
+    /**
+     * Checks whether or not the context is valid.
+     *
+     * @return True, if the context is valid; otherwise false
+     */
     bool isValid() const;
-    bool isSharing() const;
+
+    /**
+     * Destroys the context
+     */
     void reset();
 
+    /**
+     * Tries to set the context current
+     *
+     * @return True, if the context could be set as current; otherwise false
+     */
     bool makeCurrent();
+
+    /**
+     * Tries to set the current context to NULL
+     *
+     * @return  True, if the current context could be to NULL; otherwise false
+     */
     bool doneCurrent();
 
+    /**
+     * Generates a buffer, opens the file with the audio decoder and then loads
+     * the sound into it
+     */
     ALuint cacheBuffer(const QString& filename);
     QALBufferQueue streamBuffer();
 
+    /**
+     * Calls alcGetProcAddress with the opened device
+     */
     void *getProcAddress(const QString &proc) const;
 };
