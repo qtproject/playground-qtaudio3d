@@ -19,6 +19,8 @@
 
 #include "qalattributes.h"
 
+Q_GLOBAL_STATIC(QGLFormat, qgl_default_format)
+
 class QALAttributes::Private
 {
     public:
