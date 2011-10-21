@@ -19,7 +19,7 @@
 
 #include "qalattributes.h"
 
-Q_GLOBAL_STATIC(QGLFormat, qal_default_format)
+Q_GLOBAL_STATIC(QALFormat, qal_default_format)
 
 class QALAttributes::Private
 {
@@ -68,37 +68,37 @@ QGLFormat::setDefaultFormat(const QALAttributes &attributes)
 int
 QALAttributes::frequency() const
 {
-    d->frequence;
+    return d->frequence;
 }
 
 int
 QALAttributes::monoSources() const
 {
-    d->monoSources;
+    return d->monoSources;
 }
 
 int
 QALAttributes::stereoSources() const
 {
-    d->stereoSources;
+    return d->stereoSources;
 }
 
 bool
 QALAttributes::sync() const
 {
-    d->sync;
+    return d->sync;
 }
 
 int
 QALAttributes::refresh() const
 {
-    d->refresh;
+    return d->refresh;
 }
 
 QString
 QALAttributes::deviceSpecifier() const
 {
-    d->deviceSpecifier;
+    return d->deviceSpecifier;
 }
 
 void
