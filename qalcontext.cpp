@@ -58,7 +58,7 @@ QALContext::~QALContext()
 }
 
 bool
-QALContext::create(const QALContext* shareContext)
+QALContext::create()
 {
 }
 

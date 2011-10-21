@@ -41,7 +41,7 @@ public:
      *
      * @return True if the operation was successful; otherwise false
      */
-    virtual bool create();
+    bool create();
 
     /**
      * Returns the attributes that the application requested, and what create()
