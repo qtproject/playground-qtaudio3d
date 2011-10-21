@@ -19,7 +19,7 @@
 
 #include "qalattributes.h"
 
-Q_GLOBAL_STATIC(QGLFormat, qgl_default_format)
+Q_GLOBAL_STATIC(QGLFormat, qal_default_format)
 
 class QALAttributes::Private
 {
@@ -56,13 +56,13 @@ QALAttributes::~QALAttributes()
 QALAttributes
 QALAttributes::defaultFormat()
 {
-    return *qgl_default_attributes();
+    return *qal_default_attributes();
 }
 
 void
 QGLFormat::setDefaultFormat(const QALAttributes &attributes)
 {
-    *qgl_default_attributes() = attributes; 
+    *qal_default_attributes() = attributes; 
 }
 
 int
