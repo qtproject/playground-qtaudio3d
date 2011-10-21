@@ -46,6 +46,8 @@ public:
     /**
      * Returns the attributes that the application requested, and what create()
      * will use to create the device/context with
+     *
+     * @see create
      */
     QALAttributes requestedAttributes() const;
 
