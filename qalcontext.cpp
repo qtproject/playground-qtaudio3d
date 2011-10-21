@@ -85,6 +85,7 @@ QALContext::reset()
 bool
 QALContext::makeCurrent()
 {
+    return alcMakeContextCurrent(d->alcContext);
 }
 
 bool
