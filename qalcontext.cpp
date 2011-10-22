@@ -77,6 +77,16 @@ requestedAttributes() const
 {
 }
 
+QALAttributes
+attributes() const
+{
+}
+
+void
+setAttributes(const QALAttributes &attributes)
+{
+}
+
 bool
 QALContext::isValid() const
 {

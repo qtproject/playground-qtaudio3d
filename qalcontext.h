@@ -53,6 +53,9 @@ public:
      */
     QALAttributes requestedAttributes() const;
 
+    QALAttributes attributes() const;
+    void setAttributes(const QALAttributes &attributes);
+
     /**
      * Checks whether or not the context is valid.
      *
