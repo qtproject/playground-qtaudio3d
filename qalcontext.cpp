@@ -111,5 +111,5 @@ cacheBuffer(const QString& filename)
 void*
 QALContext::getProcAddress(const QString &proc) const
 {
-    return alGetProcAddress(proc.toUtf8().constData);
+    return alGetProcAddress(proc.toAscii().constData);
 }
