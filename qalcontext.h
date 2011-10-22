@@ -21,6 +21,8 @@
 
 #include "qalattributes.h"
 
+class QALBufferQueue;
+
 class Q_OPENAL_EXPORT QALContext
 {
     //Q_DECLARE_PRIVATE(QALContext)
@@ -93,10 +95,15 @@ public:
      */
     QALBufferQueue streamBuffer(const QString& filename);
 
+    void deleteBuffer(ALuint bufferId);
+
+    void deleteBufferQueue(QALBufferQueue &bufferQueue);
+
     /**
      * Calls alcGetProcAddress with the opened device
      */
-    void *getProcAddress(const QString &proc) const;q
+    void *getProcAddress(const QString &proc) const;
+
 
     private:
         class Private;

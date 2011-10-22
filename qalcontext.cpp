@@ -19,6 +19,8 @@
 
 #include "qalcontext.h"
 
+#include "qalbufferqueue.h"
+
 #if !defined(ALC_VERSION_0_1) || !defined(AL_VERSION_1_0)
 #ifdef _WIN32
 #include <al.h>
@@ -111,8 +113,19 @@ cacheBuffer(const QString& filename)
 {
 }
 
+void
+deleteBuffer(ALuint bufferId)
+{
+}
+
+void
+deleteBufferQueue(QALBufferQueue &bufferQueue)
+{
+}
+
 void*
 QALContext::getProcAddress(const QString &proc) const
 {
     return alGetProcAddress(proc.toAscii().constData);
 }
+
