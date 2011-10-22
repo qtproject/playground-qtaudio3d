@@ -59,9 +59,11 @@ public:
     bool isValid() const;
 
     /**
-     * Destroys the context
+     * Destroys the context and closes the device
+     *
+     * @return True, if the destroy and close were successful; otherwise false
      */
-    void reset();
+    bool reset();
 
     /**
      * Tries to set the context current

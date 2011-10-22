@@ -85,10 +85,13 @@ QALContext::isSharing() const
 {
 }
 
-void
+bool
 QALContext::reset()
 {
-    alcDestroyContext(d->alcContext);
+    if (alcDestroyContext(d->alcContext) == false)
+        return false;
+
+    return alcCloseDevice(d->alcDevice);
 }
 
 bool
