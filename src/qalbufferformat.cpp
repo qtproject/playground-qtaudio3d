@@ -55,7 +55,6 @@ public:
 
     QString codec;
     QALBufferFormat::SampleType sampleType;
-    QALBufferFormat::Type sampleType;
     int frequency;
     int sampleSize;
     QALBufferFormat::Channels channels;
