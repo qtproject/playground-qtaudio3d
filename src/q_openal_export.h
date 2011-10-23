@@ -34,5 +34,18 @@
 #define Q_OPENAL_EXPORT_DEPRECATED Q_DECL_DEPRECATED Q_OPENAL_EXPORT
 #endif
 
+#if !defined(ALC_VERSION_0_1) || !defined(AL_VERSION_1_0)
+#ifdef Q_OS_WIN32
+#include <al.h>
+#include <alc.h>
+#elif Q_OS_MAC
+#include <OpenAL/alc.h>
+#include <OpenAL/al.h>
+#else
+#include <AL/al.h>
+#include <AL/alc.h>
+#endif
+#endif
+
 #endif // Q_OPENAL_EXPORT_H
 
