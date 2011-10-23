@@ -28,7 +28,7 @@ public:
         : sampleType(QALBufferFormat::Unknown)
         , frequency(-1) 
         , sampleSize(-1) 
-        , channels(QALBufferFormat::Unknown)
+        , channels(QALBufferFormat::UnknownChannel)
     {   
     }   
 

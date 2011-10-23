@@ -26,7 +26,7 @@ class Q_OPENAL_EXPORT QALBufferFormat
 public:
     enum SampleType { Unknown, SignedInt, UnSignedInt, Float };
     enum ChannelFlag {
-        Unknown             = 0,
+        UnknownChannel      = 0,
         FrontLeft           = 1,
         FrontRight          = 1 << 1,
         FrontCenter         = 1 << 2,
