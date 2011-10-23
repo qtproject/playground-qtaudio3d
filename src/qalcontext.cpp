@@ -61,17 +61,17 @@ QALContext::create()
 }
 
 QALAttributes
-requestedAttributes() const
+QALContext::requestedAttributes() const
 {
 }
 
 QALAttributes
-attributes() const
+QALContext::attributes() const
 {
 }
 
 void
-setAttributes(const QALAttributes &attributes)
+QALContext::setAttributes(const QALAttributes &attributes)
 {
 }
 
@@ -107,17 +107,17 @@ QALContext::doneCurrent()
 }
 
 ALuint
-cacheBuffer(const QString& filename)
+QALContext::cacheBuffer(const QString& filename)
 {
 }
 
 void
-deleteBuffer(ALuint bufferId)
+QALContext::deleteBuffer(ALuint bufferId)
 {
 }
 
 void
-deleteBufferQueue(QALBufferQueue &bufferQueue)
+QALContext::deleteBufferQueue(QALBufferQueue &bufferQueue)
 {
 }
 
