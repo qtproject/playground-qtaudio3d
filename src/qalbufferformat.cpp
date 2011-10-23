@@ -115,12 +115,12 @@ int QALBufferFormat::frequency() const
     return d->frequency;
 }
 
-void QALBufferFormat::setChannels(int channels)
+void QALBufferFormat::setChannels(QALBufferFormat::Channels channels)
 {
     d->channels = channels;
 }
 
-int QALBufferFormat::channels() const
+QALBufferFormat::Channels QALBufferFormat::channels() const
 {
     return d->channels;
 }
