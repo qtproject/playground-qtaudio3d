@@ -26,24 +26,25 @@ class Q_OPENAL_EXPORT QALBufferFormat
 public:
     enum SampleType { Unknown, SignedInt, UnSignedInt, Float };
     enum ChannelFlag {
-        FrontLeft           = 1 << 1,
-        FrontRight          = 1 << 2,
-        FrontCenter         = 1 << 3,
-        LowFrequency        = 1 << 4,
-        BackLeft            = 1 << 5,
-        BackRight           = 1 << 6,
-        FrontLeftOfCenter   = 1 << 7,
-        FrontRightOfCenter  = 1 << 8,
-        BackCenter          = 1 << 9,
-        SideLeft            = 1 << 10,
-        SideRight           = 1 << 11,
-        TopCenter           = 1 << 12,
-        TopFrontLeft        = 1 << 13,
-        TopFrontCenter      = 1 << 14,
-        TopFrontRight       = 1 << 15,
-        TopBackLeft         = 1 << 16,
-        TopBackCenter       = 1 << 17,
-        TopBackRight        = 1 << 18
+        Unknown             = 0,
+        FrontLeft           = 1,
+        FrontRight          = 1 << 1,
+        FrontCenter         = 1 << 2,
+        LowFrequency        = 1 << 3,
+        BackLeft            = 1 << 4,
+        BackRight           = 1 << 5,
+        FrontLeftOfCenter   = 1 << 6,
+        FrontRightOfCenter  = 1 << 7,
+        BackCenter          = 1 << 8,
+        SideLeft            = 1 << 9,
+        SideRight           = 1 << 10,
+        TopCenter           = 1 << 11,
+        TopFrontLeft        = 1 << 12,
+        TopFrontCenter      = 1 << 13,
+        TopFrontRight       = 1 << 14,
+        TopBackLeft         = 1 << 15,
+        TopBackCenter       = 1 << 16,
+        TopBackRight        = 1 << 17,
     };
 
     Q_DECLARE_FLAGS(Channels, ChannelFlag)
