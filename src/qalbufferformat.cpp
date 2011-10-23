@@ -19,34 +19,36 @@
 
 #include "qalbufferformat.h"
 
-class QALBufferFormatPrivate : public QSharedData
+#include <QtCore/QString>
+
+class QALBufferFormat::Private : public QSharedData
 {
 public:
-    QALBufferFormatPrivate()
-    {   
-        frequency = -1; 
-        channels = -1; 
-        sampleSize = -1; 
-        sampleType = QALBufferFormat::Unknown;
-    }   
-
-    QAudioFormatPrivate(const QAudioFormatPrivate &other):
-        QSharedData(other),
-        codec(other.codec),
-        sampleType(other.sampleType),
-        frequency(other.frequency),
-        channels(other.channels),
-        sampleSize(other.sampleSize)
+    Private()
+        : sampleType(QALBufferFormat::Unknown)
+        , frequency(-1) 
+        , sampleSize(-1) 
+        , channels(QALBufferFormat::Unknown)
     {   
     }   
 
-    QAudioFormatPrivate& operator=(const QAudioFormatPrivate &other)
+    Private(const Private &other)
+        : QSharedData(other)
+        , codec(other.codec)
+        , sampleType(other.sampleType)
+        , frequency(other.frequency)
+        , sampleSize(other.sampleSize)
+        , channels(other.channels)
+    {   
+    }   
+
+    Private& operator=(const Private &other)
     {   
         codec = other.codec;
         sampleType = other.sampleType;
         frequency = other.frequency;
-        channels = other.channels;
         sampleSize = other.sampleSize;
+        channels = other.channels;
 
         return *this;
     }   
@@ -60,7 +62,7 @@ public:
 };
 
 QALBufferFormat::QALBufferFormat()
-    : d(new QALBufferFormatPrivate)
+    : d(new Private)
 {
 }
 
@@ -143,7 +145,7 @@ QString QALBufferFormat::codec() const
     return d->codec;
 }
 
-void QALBufferFormat::setSampleType(QAudioFormat::SampleType sampleType)
+void QALBufferFormat::setSampleType(QALBufferFormat::SampleType sampleType)
 {
     d->sampleType = sampleType;
 }

@@ -19,6 +19,8 @@
 
 #include "q_openal_export.h"
 
+#include <QtCore/QSharedPointer>
+
 class Q_OPENAL_EXPORT QALBufferFormat
 {
 public:
@@ -54,10 +56,11 @@ public:
     void setCodec(const QString &codec);
     QString codec() const;
 
-    void setSampleType(QAudioFormat::SampleType sampleType);
+    void setSampleType(QALBufferFormat::SampleType sampleType);
     QALBufferFormat::SampleType sampleType() const;
 
 private:
-    QSharedDataPointer<QALBufferFormatPrivate> d;
+    class Private;
+    QSharedDataPointer<Private> d;
 };
 
