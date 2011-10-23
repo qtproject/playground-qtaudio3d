@@ -34,8 +34,8 @@ class QALContext::Private
         {
         }
 
-        ALCDevice *alcDevice;
-        ALCContext *alcContext;
+        ALCdevice *alcDevice;
+        ALCcontext *alcContext;
 };
 
 QALContext::QALContext()
