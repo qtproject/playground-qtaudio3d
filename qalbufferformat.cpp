@@ -27,7 +27,7 @@ public:
         frequency = -1; 
         channels = -1; 
         sampleSize = -1; 
-        sampleType = QAudioFormat::Unknown;
+        sampleType = QALBufferFormat::Unknown;
     }   
 
     QAudioFormatPrivate(const QAudioFormatPrivate &other):
@@ -52,13 +52,12 @@ public:
     }   
 
     QString codec;
-    QAudioFormat::SampleType sampleType;
+    QALBufferFormat::SampleType sampleType;
+    QALBufferFormat::Type sampleType;
     int frequency;
-    int channels;
     int sampleSize;
+    QALBufferFormat::Channels channels;
 };
-
-
 
 QALBufferFormat::QALBufferFormat()
     : d(new QALBufferFormatPrivate)
@@ -114,19 +113,9 @@ int QALBufferFormat::frequency() const
     return d->frequency;
 }
 
-void QALBufferFormat::setChannelCount(int channels)
-{
-    d->channels = channels;
-}
-
 void QALBufferFormat::setChannels(int channels)
 {
     d->channels = channels;
-}
-
-int QALBufferFormat::channelCount() const
-{
-    return d->channels;
 }
 
 int QALBufferFormat::channels() const

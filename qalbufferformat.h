@@ -23,6 +23,12 @@ class Q_OPENAL_EXPORT QALBufferFormat
 {
 public:
     enum SampleType { Unknown, SignedInt, UnSignedInt, Float };
+    enum ChannelFlag { FrontLeft, FrontRight, FrontCenter, LowFrequency,
+        BackLeft, BackRight, FrontLeftOfCenter, FrontRightOfCenter, BackCenter,
+        SideLeft, SideRight, TopCenter, TopFrontLeft, TopFrontCenter,
+        TopFrontRight, TopBackLeft, TopBackCenter, TopBackRight };
+    Q_DECLARE_FLAGS(Channels, ChannelFlag)
+    Q_DECLARE_OPERATORS_FOR_FLAGS(Channels)
 
     QALBufferFormat();
     QALBufferFormat(const QALBufferFormat &other);
@@ -39,10 +45,8 @@ public:
     void setSampleRate(int sampleRate);
     int sampleRate() const;
 
-    void setChannels(int channels);
-    int channels() const;
-    void setChannelCount(int channelCount);
-    int channelCount() const;
+    void setChannels(QALBufferFormat::Channels channels);
+    QALBufferFormat::Channels channels() const;
 
     void setSampleSize(int sampleSize);
     int sampleSize() const;
@@ -51,7 +55,7 @@ public:
     QString codec() const;
 
     void setSampleType(QAudioFormat::SampleType sampleType);
-    QAudioFormat::SampleType sampleType() const;
+    QALBufferFormat::SampleType sampleType() const;
 
 private:
     QSharedDataPointer<QALBufferFormatPrivate> d;
