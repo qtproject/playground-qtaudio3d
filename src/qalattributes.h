@@ -64,5 +64,5 @@ public:
 
     private:
         class Private;
-        Private *const d;
+        Private *d;
 };
