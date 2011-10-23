@@ -48,7 +48,6 @@ public:
     };
 
     Q_DECLARE_FLAGS(Channels, ChannelFlag)
-    Q_DECLARE_OPERATORS_FOR_FLAGS(Channels)
 
     QALBufferFormat();
     QALBufferFormat(const QALBufferFormat &other);
@@ -82,3 +81,4 @@ private:
     QSharedDataPointer<Private> d;
 };
 
+Q_DECLARE_OPERATORS_FOR_FLAGS(QALBufferFormat::Channels)
