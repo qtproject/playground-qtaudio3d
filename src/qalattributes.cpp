@@ -55,13 +55,13 @@ QALAttributes::~QALAttributes()
 }
 
 QALAttributes
-QALAttributes::defaultFormat()
+QALAttributes::defaultAttributes()
 {
     return *qal_default_attributes();
 }
 
 void
-QALAttributes::setDefaultFormat(const QALAttributes &attributes)
+QALAttributes::setDefaultAttributes(const QALAttributes &attributes)
 {
     *qal_default_attributes() = attributes; 
 }
