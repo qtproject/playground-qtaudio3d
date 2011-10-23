@@ -20,6 +20,18 @@
 cmake_minimum_required(VERSION 2.8)
 project(QtOpenAL)
 
+find_package(OpenAL)
+if(not OPENAL_FOUND)
+    message(FATAL_ERROR "OpenAL not found!\nPlease try setting the OPENALDIR environment variable and try again.")
+endif(not OPENAL_FOUND)
+
+message(STATUS "OpenAL include: ${OPENAL_INCLUDE_DIR}")
+message(STATUS "OpenAL lib: ${OPENAL_LIBRARY}")
+
+INCLUDE_DIRECTORIES(${OPENAL_INCLUDE_DIR})
+SET(OPENAL_LIBRARIES ${OPENAL_LIBRARY})
+
+
 #Project options, to provide a selective build process
 #Note that some of these are mutually exclusive or just
 #do not make a whole lot of sense combined.
