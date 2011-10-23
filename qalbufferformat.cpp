@@ -85,7 +85,6 @@ bool QALBufferFormat::operator==(const QALBufferFormat &other) const
     return d->frequency == other.d->frequency &&
             d->channels == other.d->channels &&
             d->sampleSize == other.d->sampleSize &&
-            d->byteOrder == other.d->byteOrder &&
             d->codec == other.d->codec &&
             d->sampleType == other.d->sampleType;
 }
