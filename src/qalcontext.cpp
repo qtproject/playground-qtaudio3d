@@ -124,6 +124,6 @@ QALContext::deleteBufferQueue(QALBufferQueue &bufferQueue)
 void*
 QALContext::getProcAddress(const QString &proc) const
 {
-    return alGetProcAddress(proc.toAscii().constData);
+    return alGetProcAddress(proc.toAscii().constData());
 }
 
