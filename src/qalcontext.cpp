@@ -83,8 +83,7 @@ QALContext::isValid() const
 bool
 QALContext::reset()
 {
-    if (alcDestroyContext(d->alcContext) == false)
-        return false;
+    alcDestroyContext(d->alcContext);
 
     return alcCloseDevice(d->alcDevice);
 }
