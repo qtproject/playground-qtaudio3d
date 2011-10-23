@@ -81,11 +81,6 @@ QALContext::isValid() const
 }
 
 bool
-QALContext::isSharing() const
-{
-}
-
-bool
 QALContext::reset()
 {
     if (alcDestroyContext(d->alcContext) == false)
