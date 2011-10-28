@@ -20,6 +20,7 @@
 #include "q_openal_export.h"
 
 #include <QtCore/QString>
+#include <QtCore/QSharedPointer>
 
 class Q_OPENAL_EXPORT QALAttributes
 {
@@ -67,5 +68,5 @@ public:
 
     private:
         class Private;
-        Private *d;
+        QSharedDataPointer<Private> d;
 };

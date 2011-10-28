@@ -21,7 +21,7 @@
 
 Q_GLOBAL_STATIC(QALAttributes, qal_default_attributes)
 
-class QALAttributes::Private
+class QALAttributes::Private : public QSharedData
 {
     public:
         Private()
