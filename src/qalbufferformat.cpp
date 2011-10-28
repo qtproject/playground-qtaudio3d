@@ -51,7 +51,11 @@ public:
         channels = other.channels;
 
         return *this;
-    }   
+    }
+
+    ~Private()
+    {
+    }
 
     QString codec;
     QALBufferFormat::SampleType sampleType;
