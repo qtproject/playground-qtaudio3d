@@ -31,6 +31,7 @@ public:
     virtual ~QALAttributes();
 
     QALAttributes& operator=(const QALAttributes &other);
+    bool operator==(const QALAttributes &other) const;
 
     /*!
       Returns the default QALAttributes for the application. All QALContext

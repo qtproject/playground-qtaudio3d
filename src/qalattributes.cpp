@@ -89,6 +89,17 @@ QALAttributes::operator=(const QALAttributes &other)
     return *this;
 }
 
+bool
+QALAttributes::operator==(const QALAttributes &other) const
+{
+    return d->frequency == other.d->frequency &&
+            d->monoSources == other.d->monoSources &&
+            d->stereoSources == other.d->stereoSources &&
+            d->sync == other.d->sync &&
+            d->refresh == other.d->refresh &&
+            d->deviceSpecifier == other.d->deviceSpecifier;
+}
+
 QALAttributes
 QALAttributes::defaultAttributes()
 {
