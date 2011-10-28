@@ -26,6 +26,7 @@ class Q_OPENAL_EXPORT QALAttributes
     //Q_DECLARE_PRIVATE(QALAttribues)
 public:
     QALAttributes();
+    QALAttributes(const QALAttributes &other);
     virtual ~QALAttributes();
 
     /*!

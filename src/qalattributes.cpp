@@ -30,8 +30,20 @@ class QALAttributes::Private
             , stereoSources(1)
             , sync(false)
             , refresh(45)
-        {   
-        }   
+        {
+        }
+
+        Private(const Private &other)
+            : QSharedData(other)
+            , frequency(other.frequency)
+            , monoSources(other.monoSources)
+            , stereoSources(other.stereoSources)
+            , sync(other.sync)
+            , refresh(other.refresh)
+            , deviceSpecifier(other.deviceSpecifier)
+        {
+        }
+
 
         ~Private()
         {   
@@ -47,6 +59,11 @@ class QALAttributes::Private
 
 QALAttributes::QALAttributes()
     : d(new Private)
+{
+}
+
+QALAttributes::QALAttributes(const QALAttributes &other):
+    d(other.d)
 {
 }
 
