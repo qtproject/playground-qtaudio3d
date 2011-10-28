@@ -100,6 +100,11 @@ QALAttributes::operator==(const QALAttributes &other) const
             d->deviceSpecifier == other.d->deviceSpecifier;
 }
 
+bool QALAttributes::operator!=(const QALAttributes& other) const
+{
+    return !(*this == other);
+}
+
 QALAttributes
 QALAttributes::defaultAttributes()
 {
