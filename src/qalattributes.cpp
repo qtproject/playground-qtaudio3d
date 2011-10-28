@@ -44,6 +44,17 @@ class QALAttributes::Private
         {
         }
 
+        Private& operator=(const Private &other)
+        {
+            frequency = other.frequency;
+            monoSources = other.monoSources;
+            stereoSources = other.stereoSources;
+            sync = other.sync;
+            refresh = other.refresh;
+            deviceSpecifier = other.deviceSpecifier;
+
+            return *this;
+        }
 
         ~Private()
         {   
@@ -69,6 +80,13 @@ QALAttributes::QALAttributes(const QALAttributes &other):
 
 QALAttributes::~QALAttributes()
 {
+}
+
+QALAttributes&
+QALAttributes::operator=(const QALAttributes &other)
+{
+    d = other.d;
+    return *this;
 }
 
 QALAttributes

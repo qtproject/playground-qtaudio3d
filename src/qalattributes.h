@@ -29,6 +29,8 @@ public:
     QALAttributes(const QALAttributes &other);
     virtual ~QALAttributes();
 
+    QALAttributes& operator=(const QALAttributes &other);
+
     /*!
       Returns the default QALAttributes for the application. All QALContext
       objects that are created use these attributes unless another format is
