@@ -19,11 +19,26 @@
 
 #include "qalbufferqueue.h"
 
+#include <QtCore/QString>
+
 QALBufferQueue::QALBufferQueue()
 {
 }
 
+QALBufferQueue::QALBufferQueue(const QString &fileName)
+{
+
+}
+
 QALBufferQueue::~QALBufferQueue()
+{
+}
+
+void *decode(unsigned int &len)
+{
+}
+
+bool processedBuffers()
 {
 }
 

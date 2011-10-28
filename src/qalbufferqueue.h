@@ -19,10 +19,16 @@
 
 #include "q_openal_export.h"
 
+//class QString;
+
 class Q_OPENAL_EXPORT QALBufferQueue
 {
     //Q_DECLARE_PRIVATE(QALBufferQueue)
 public:
     QALBufferQueue();
+    QALBufferQueue(const QString& fileName);
     virtual ~QALBufferQueue();
+
+    void *decode(unsigned int &len);
+    bool processedBuffers();
 };
