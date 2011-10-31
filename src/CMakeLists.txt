@@ -52,11 +52,11 @@ set(QtOpenAL_SRCS
 )
 
 set(QtOpenAL_HEADERS
-    qalattributes.cpp
-    qalbufferformat.cpp
-    qalbufferqueue.cpp
-    qalcontext.cpp
-    qalsource.cpp
+    qalattributes.h
+    qalbufferformat.h
+    qalbufferqueue.h
+    qalcontext.h
+    qalsource.h
 	${CMAKE_CURRENT_BINARY_DIR}/qtopenal_global.h
 )
 
