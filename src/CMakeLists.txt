@@ -44,6 +44,7 @@ set(QTOPENAL_INCLUDES
 )
 
 set(QtOpenAL_SRCS
+    qalabstractaudiodecoder.cpp
     qalattributes.cpp
     qalbufferformat.cpp
     qalbufferqueue.cpp
@@ -52,6 +53,7 @@ set(QtOpenAL_SRCS
 )
 
 set(QtOpenAL_HEADERS
+    qalabstractaudiodecoder.h
     qalattributes.h
     qalbufferformat.h
     qalbufferqueue.h
