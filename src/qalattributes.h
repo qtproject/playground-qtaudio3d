@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#ifndef QALATTRIBUTES_H
+#define QALATTRIBUTES_H
+
 #include "q_openal_export.h"
 
 #include <QtCore/QString>
@@ -72,3 +75,5 @@ public:
         class Private;
         QSharedDataPointer<Private> d;
 };
+
+#endif

@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#ifndef QALBUFFERFORMAT_H
+#define QALBUFFERFORMAT_H
+
 #include "q_openal_export.h"
 
 #include <QtCore/QSharedPointer>
@@ -82,3 +85,5 @@ private:
 };
 
 Q_DECLARE_OPERATORS_FOR_FLAGS(QALBufferFormat::Channels)
+
+#endif

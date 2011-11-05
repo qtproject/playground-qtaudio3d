@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#ifndef QALBUFFERQUEUE_H
+#define QALBUFFERQUEUE_H
+
 #include "q_openal_export.h"
 
 //class QString;
@@ -32,3 +35,5 @@ public:
     void *decode(unsigned int &len);
     bool processedBuffers();
 };
+
+#endif

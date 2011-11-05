@@ -17,6 +17,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
+#ifndef QALSOURCE_H
+#define QALSOURCE_H
+
 #include "q_openal_export.h"
 
 class Q_OPENAL_EXPORT QALSource
@@ -26,3 +29,5 @@ public:
     QALSource();
     virtual ~QALSource();
 };
+
+#endif
