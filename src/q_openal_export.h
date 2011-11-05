@@ -35,7 +35,7 @@
 #endif
 
 #if !defined(ALC_VERSION_0_1) || !defined(AL_VERSION_1_0)
-#ifdef Q_OS_WIN32
+#ifdef Q_OS_WIN
 #include <al.h>
 #include <alc.h>
 #elif Q_OS_MAC
