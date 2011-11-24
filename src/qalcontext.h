@@ -116,7 +116,7 @@ public:
 
     void deleteBuffer(ALuint bufferId);
 
-    void clearBufferCache();
+    bool deleteBuffers();
 
     void deleteBufferQueue(QALBufferQueue &bufferQueue);
 

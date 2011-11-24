@@ -141,10 +141,25 @@ QALContext::deleteBuffer(ALuint bufferId)
 {
 }
 
-void
-QALContext::clearBufferCache()
+bool
+QALContext::deleteBuffers()
 {
+    ALCenum error;
+    if ((error = alcGetError(d->alcDevice)) != ALC_NO_ERROR) {
+        qWarning() << "Error before trying to delete the buffers:" << alcGetString(d->alcDevice, error);
+    };
+
+    QList<ALuint> identifiers = d->loadedBuffers.values();
+    alDeleteBuffers(identifiers.count(), identifiers.toVector().data());
+
+    if ((error = alcGetError(d->alcDevice)) != ALC_NO_ERROR) {
+        qWarning() << "Failed to delete to buffers:" << alcGetString(d->alcDevice, error);
+        return false;
+    };
+
     d->loadedBuffers.clear();
+
+    return true;
 }
 
 void
