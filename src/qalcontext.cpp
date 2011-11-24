@@ -84,6 +84,7 @@ QALContext::setAttributes(const QALAttributes &attributes)
 bool
 QALContext::isValid() const
 {
+    return alcGetContextsDevice(d->alcContext) != 0;
 }
 
 bool
