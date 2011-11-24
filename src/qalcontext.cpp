@@ -41,7 +41,7 @@ class QALContext::Private
         QALAttributes attributes;
 };
 
-QALContext::QALContext()
+QALContext::QALContext(const QALAttributes &attributes)
     : d(new Private)
 {
 }
@@ -73,15 +73,15 @@ QALContext::requestedAttributes() const
     return d->attributes;
 }
 
+void
+QALContext::setRequestedAttributes(const QALAttributes &attributes)
+{
+    d->attributes = attributes;
+}
+
 QALAttributes
 QALContext::attributes() const
 {
-}
-
-void
-QALContext::setAttributes(const QALAttributes &attributes)
-{
-    d->attributes = attributes;
 }
 
 bool

@@ -25,6 +25,7 @@
 #include "qalattributes.h"
 
 class QALBufferQueue;
+class QALAttributes;
 
 class Q_OPENAL_EXPORT QALContext
 {
@@ -33,7 +34,7 @@ public:
     /**
      * Constructor
      */
-    QALContext();
+    QALContext(const QALAttributes &attributes);
 
     /**
      * Desctructor
@@ -57,19 +58,19 @@ public:
     QALAttributes requestedAttributes() const;
 
     /*! 
+      Sets the requested attributes for the devices.
+
+      \sa attributes()
+      */
+    void setRequestedAttributes(const QALAttributes &attributes);
+
+    /*! 
       Return the current attributes as given by the device. It constructs a new
       QALAttributes using the values directly from the device
 
       \sa requestedAttributes()
       */
     QALAttributes attributes() const;
-
-    /*! 
-      Sets the requested attributes for the devices.
-
-      \sa attributes()
-      */
-    void setAttributes(const QALAttributes &attributes);
 
     /**
      * Checks whether or not the context is valid.
