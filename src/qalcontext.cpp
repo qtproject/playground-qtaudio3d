@@ -21,6 +21,8 @@
 
 #include "qalbufferqueue.h"
 
+#include <QtCore/QDebug>
+
 class QALContext::Private
 {
     public:
@@ -88,8 +90,19 @@ bool
 QALContext::reset()
 {
     alcDestroyContext(d->alcContext);
+    d->alcContext = 0;
 
-    return alcCloseDevice(d->alcDevice);
+    ALCenum error;
+
+    if ((error = alcGetError(d->alcDevice)) != AL_NO_ERROR) {
+        qDebug() << "Failed to destroy the context:" << alGetString(error);
+        return false;
+    };
+
+    alcCloseDevice(d->alcDevice);
+    d->alcDevice;
+
+    return true;
 }
 
 bool
