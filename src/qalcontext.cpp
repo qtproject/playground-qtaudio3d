@@ -38,6 +38,7 @@ class QALContext::Private
 
         ALCdevice *alcDevice;
         ALCcontext *alcContext;
+        QALAttributes attributes;
 };
 
 QALContext::QALContext()
@@ -74,11 +75,13 @@ QALContext::requestedAttributes() const
 QALAttributes
 QALContext::attributes() const
 {
+    return d->attributes;
 }
 
 void
 QALContext::setAttributes(const QALAttributes &attributes)
 {
+    d->attributes = attributes;
 }
 
 bool

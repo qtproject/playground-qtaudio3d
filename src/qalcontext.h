@@ -56,7 +56,19 @@ public:
      */
     QALAttributes requestedAttributes() const;
 
+    /*! 
+      Return the current attributes as given by the device. It constructs a new
+      QALAttributes using the values directly from the device
+
+      \sa requestedAttributes()
+      */
     QALAttributes attributes() const;
+
+    /*! 
+      Sets the requested attributes for the devices.
+
+      \sa attributes()
+      */
     void setAttributes(const QALAttributes &attributes);
 
     /**
