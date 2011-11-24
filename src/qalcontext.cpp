@@ -134,6 +134,13 @@ QALContext::doneCurrent()
 ALuint
 QALContext::cacheBuffer(const QString& filename)
 {
+    ALuint buffer = d->loadedBuffers.value(filename, 0);
+    if (!buffer) {
+        // buffer = loadFromFile(filename);
+        d->loadedBuffers.insert(filename, buffer);
+    }
+
+    return buffer;
 }
 
 bool
