@@ -111,6 +111,11 @@ QALContext::reset()
 bool
 QALContext::makeCurrent()
 {
+    if (isValid() == false) {
+        qWarning() << Q_FUNC_INFO << "Cannot make invalid context current";
+        return false;
+    }
+
     return alcMakeContextCurrent(d->alcContext);
 }
 
