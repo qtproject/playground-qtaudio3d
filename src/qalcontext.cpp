@@ -40,6 +40,7 @@ class QALContext::Private
         ALCdevice *alcDevice;
         ALCcontext *alcContext;
         QALAttributes requestedAttributes;
+        QHash<QString, ALuint> loadedBuffers;
 };
 
 QALContext::QALContext(const QALAttributes &attributes)
@@ -138,6 +139,12 @@ QALContext::cacheBuffer(const QString& filename)
 void
 QALContext::deleteBuffer(ALuint bufferId)
 {
+}
+
+void
+QALContext::clearBufferCache()
+{
+    d->loadedBuffers.clear();
 }
 
 void
