@@ -89,15 +89,18 @@ QALContext::isValid() const
 bool
 QALContext::reset()
 {
-    alcDestroyContext(d->alcContext);
-    d->alcContext = 0;
-
     ALCenum error;
+    if ((error = alcGetError(d->alcDevice)) != ALC_NO_ERROR) {
+        qWarning() << "Error before trying to destroy the context:" << alcGetString(d->alcDevice, error);
+    };
 
-    if ((error = alcGetError(d->alcDevice)) != AL_NO_ERROR) {
-        qDebug() << "Failed to destroy the context:" << alGetString(error);
+    alcDestroyContext(d->alcContext);
+    if ((error = alcGetError(d->alcDevice)) != ALC_NO_ERROR) {
+        qWarning() << "Failed to destroy the context:" << alcGetString(d->alcDevice, error);
         return false;
     };
+
+    d->alcContext = 0;
 
     alcCloseDevice(d->alcDevice);
     d->alcDevice;
