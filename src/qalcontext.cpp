@@ -136,10 +136,24 @@ QALContext::cacheBuffer(const QString& filename)
 {
 }
 
-void
+bool
 QALContext::deleteBuffer(ALuint bufferId)
 {
+    ALenum error;
+    if ((error = alGetError()) != ALC_NO_ERROR) {
+        qWarning() << "Error before trying to delete the buffer:" << alGetString(error);
+    };
 
+    alDeleteBuffers(1, &bufferId);
+
+    if ((error = alGetError()) != AL_NO_ERROR) {
+        qWarning() << "Failed to delete to buffer:" << alGetString(error);
+        return false;
+    };
+
+    d->loadedBuffers.remove(d->loadedBuffers.key(bufferId));
+
+    return true;
 }
 
 bool

@@ -114,7 +114,7 @@ public:
      */
     QALBufferQueue streamBuffer(const QString& filename);
 
-    void deleteBuffer(ALuint bufferId);
+    bool deleteBuffer(ALuint bufferId);
 
     bool deleteBuffers();
 
