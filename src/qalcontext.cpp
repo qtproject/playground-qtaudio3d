@@ -109,7 +109,7 @@ QALContext::reset()
     d->alcContext = 0;
 
     alcCloseDevice(d->alcDevice);
-    d->alcDevice;
+    d->alcDevice = 0;
 
     return true;
 }
