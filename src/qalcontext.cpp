@@ -70,12 +70,12 @@ QALContext::create()
 QALAttributes
 QALContext::requestedAttributes() const
 {
+    return d->attributes;
 }
 
 QALAttributes
 QALContext::attributes() const
 {
-    return d->attributes;
 }
 
 void
