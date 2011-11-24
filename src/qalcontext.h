@@ -34,7 +34,7 @@ public:
     /**
      * Constructor
      */
-    QALContext(const QALAttributes &attributes);
+    QALContext(const QALAttributes &attributes = QALAttributes::defaultAttributes());
 
     /**
      * Desctructor

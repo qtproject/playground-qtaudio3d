@@ -26,9 +26,10 @@
 class QALContext::Private
 {
     public:
-        Private()
+        Private(const QALAttributes &attributes)
             : alcDevice(0)
             , alcContext(0)
+            , requestedAttributes(attributes)
         {
         }
 
@@ -42,7 +43,7 @@ class QALContext::Private
 };
 
 QALContext::QALContext(const QALAttributes &attributes)
-    : d(new Private)
+    : d(new Private(attributes))
 {
 }
 
