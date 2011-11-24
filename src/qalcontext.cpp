@@ -38,7 +38,7 @@ class QALContext::Private
 
         ALCdevice *alcDevice;
         ALCcontext *alcContext;
-        QALAttributes attributes;
+        QALAttributes requestedAttributes;
 };
 
 QALContext::QALContext(const QALAttributes &attributes)
@@ -70,13 +70,13 @@ QALContext::create()
 QALAttributes
 QALContext::requestedAttributes() const
 {
-    return d->attributes;
+    return d->requestedAttributes;
 }
 
 void
 QALContext::setRequestedAttributes(const QALAttributes &attributes)
 {
-    d->attributes = attributes;
+    d->requestedAttributes = attributes;
 }
 
 QALAttributes
