@@ -55,7 +55,11 @@ QALContext::create()
         return false;
 
     if ((d->alcContext = alcCreateContext(d->alcDevice, NULL)) == 0)
+    {
+        alcCloseDevice(d->alcDevice);
+        d->alcDevice = 0;
         return false;
+    }
 
     return true;
 }
