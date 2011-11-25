@@ -84,17 +84,16 @@ QALContext::setRequestedAttributes(const QALAttributes &attributes)
 QALAttributes
 QALContext::attributes() const
 {
+    if (isValid() == false)
+        return QALAttributes::defaultAttributes();
+
     ALCenum error;
 
     if ((error = alcGetError(d->alcDevice)) != ALC_NO_ERROR) {
         qWarning() << "Error before trying to create attributes:" << alcGetString(d->alcDevice, error);
     };
 
-    QALAttributes attributes = QALAttributes::defaultAttributes();
-
-    if (isValid() == false)
-        return attributes;
-
+    QALAttributes attributes;
     attributes.setDeviceSpecifier(alcGetString(d->alcDevice, ALC_DEVICE_SPECIFIER));
 
     ALCint tmp;
