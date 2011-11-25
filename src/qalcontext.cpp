@@ -84,6 +84,37 @@ QALContext::setRequestedAttributes(const QALAttributes &attributes)
 QALAttributes
 QALContext::attributes() const
 {
+    ALCenum error;
+
+    if ((error = alcGetError(d->alcDevice)) != ALC_NO_ERROR) {
+        qWarning() << "Error before trying to create attributes:" << alcGetString(d->alcDevice, error);
+    };
+
+    QALAttributes attributes = QALAttributes::defaultAttributes();
+
+    if (isValid() == false)
+        return attributes;
+
+    attributes.setDeviceSpecifier(alcGetString(d->alcDevice, ALC_DEVICE_SPECIFIER));
+
+    ALCint tmp;
+
+    alcGetIntegerv(d->alcDevice, ALC_FREQUENCY, 1, &tmp);
+    attributes.setFrequency(tmp);
+
+    alcGetIntegerv(d->alcDevice, ALC_REFRESH, 1, &tmp);
+    attributes.setRefresh(tmp);
+
+    alcGetIntegerv(d->alcDevice, ALC_SYNC, 1, &tmp);
+    attributes.setSync(tmp);
+
+    alcGetIntegerv(d->alcDevice, ALC_MONO_SOURCES, 1, &tmp);
+    attributes.setMonoSources(tmp);
+
+    alcGetIntegerv(d->alcDevice, ALC_STEREO_SOURCES, 1, &tmp);
+    attributes.setStereoSources(tmp);
+
+    return attributes;
 }
 
 bool
