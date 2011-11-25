@@ -55,11 +55,19 @@ QALContext::~QALContext()
 bool
 QALContext::create()
 {
-    // Open the default device
-    if ((d->alcDevice = alcOpenDevice(NULL)) == false)
+    if ((d->alcDevice = alcOpenDevice(d->requestedAttributes.deviceSpecifier().toAscii())) == false)
         return false;
 
-    if ((d->alcContext = alcCreateContext(d->alcDevice, NULL)) == 0)
+    ALCint attributes[] = {
+        ALC_FREQUENCY, d->requestedAttributes.frequency(),
+        ALC_MONO_SOURCES, d->requestedAttributes.monoSources(),
+        ALC_REFRESH, d->requestedAttributes.refresh(),
+        ALC_STEREO_SOURCES, d->requestedAttributes.stereoSources(),
+        ALC_SYNC, d->requestedAttributes.sync(),
+        0
+    };
+
+    if ((d->alcContext = alcCreateContext(d->alcDevice, attributes)) == 0)
     {
         alcCloseDevice(d->alcDevice);
         d->alcDevice = 0;
