@@ -55,8 +55,15 @@ QALContext::~QALContext()
 bool
 QALContext::create()
 {
-    if ((d->alcDevice = alcOpenDevice(d->requestedAttributes.deviceSpecifier().toAscii())) == false)
+    if ((d->alcDevice = alcOpenDevice(d->requestedAttributes.deviceSpecifier().toAscii())) == false) {
+        qWarning() << "Failed to open the device:" << d->requestedAttributes.deviceSpecifier();
         return false;
+    }
+
+    ALCenum error;
+    if ((error = alcGetError(d->alcDevice)) != ALC_NO_ERROR) {
+        qWarning() << "Error before trying to create the context:" << alcGetString(d->alcDevice, error);
+    };
 
     ALCint attributes[] = {
         ALC_FREQUENCY, d->requestedAttributes.frequency(),
@@ -67,8 +74,9 @@ QALContext::create()
         0
     };
 
-    if ((d->alcContext = alcCreateContext(d->alcDevice, attributes)) == 0)
-    {
+    d->alcContext = alcCreateContext(d->alcDevice, attributes);
+    if ((error = alcGetError(d->alcDevice)) != ALC_NO_ERROR) {
+        qWarning() << "Failed to create the context:" << alcGetString(d->alcDevice, error);
         alcCloseDevice(d->alcDevice);
         d->alcDevice = 0;
         return false;
