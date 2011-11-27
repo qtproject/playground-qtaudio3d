@@ -38,7 +38,7 @@
 #ifdef Q_OS_WIN
 #include <al.h>
 #include <alc.h>
-#elif Q_OS_MAC
+#elif defined(Q_OS_MAC)
 #include <OpenAL/alc.h>
 #include <OpenAL/al.h>
 #else
