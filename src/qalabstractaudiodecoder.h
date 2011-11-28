@@ -33,17 +33,16 @@ public:
     QALAbstractAudioDecoder();
     virtual ~QALAbstractAudioDecoder();
 
-protected:
-    virtual bool open(const QFile &filename) = 0;
-    virtual bool open(const QUrl &filename) = 0;
-    virtual bool open(const QString &filename) = 0;
+    virtual bool open(const QFile &file) = 0;
+    virtual bool open(const QUrl &fileUrl) = 0;
+    virtual bool open(const QString &fileName) = 0;
     virtual bool seek(qint64 pos) = 0;
-    virtual void close() = 0;
+    virtual bool close() = 0;
 
     virtual void setEncodedData(const QByteArray &encodedData) = 0;
 
-    virtual QByteArray decodeAll();
-    virtual QByteArray decode(qint64 maxlen);
+    virtual QByteArray decodeAll() = 0;
+    virtual QByteArray decode(qint64 maxlen) = 0;
     virtual qint64 decode(char *decodedData, qint64 maxlen) = 0;
 };
 
