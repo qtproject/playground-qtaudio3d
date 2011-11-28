@@ -22,7 +22,9 @@
 
 #include "q_openal_export.h"
 
-//class QString;
+class QString;
+class QFile;
+class QUrl;
 
 class Q_OPENAL_EXPORT QALAbstractAudioDecoder
 {
@@ -31,6 +33,18 @@ public:
     QALAbstractAudioDecoder();
     virtual ~QALAbstractAudioDecoder();
 
+protected:
+    virtual bool open(const QFile &filename) = 0;
+    virtual bool open(const QUrl &filename) = 0;
+    virtual bool open(const QString &filename) = 0;
+    virtual bool seek(qint64 pos) = 0;
+    virtual void close() = 0;
+
+    virtual void setEncodedData(const QByteArray &encodedData) = 0;
+
+    virtual QByteArray decodeAll();
+    virtual QByteArray decode(qint64 maxlen);
+    virtual qint64 decode(char *decodedData, qint64 maxlen) = 0;
 };
 
 #endif

@@ -20,6 +20,8 @@
 #include "qalabstractaudiodecoder.h"
 
 #include <QtCore/QString>
+#include <QtCore/QFile>
+#include <QtCore/QUrl>
 
 QALAbstractAudioDecoder::QALAbstractAudioDecoder()
 {
