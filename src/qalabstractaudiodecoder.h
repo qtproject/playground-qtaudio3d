@@ -36,6 +36,7 @@ public:
     virtual bool open(const QFile &file) = 0;
     virtual bool open(const QUrl &fileUrl) = 0;
     virtual bool open(const QString &fileName) = 0;
+    virtual qint64 pos() = 0;
     virtual bool seek(qint64 pos) = 0;
     virtual bool close() = 0;
 

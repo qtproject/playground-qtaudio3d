@@ -75,6 +75,17 @@ QALSndAudioDecoder::open(const QString &fileName)
     return true;
 }
 
+qint64
+QALSndAudioDecoder::pos()
+{
+    int position;
+    if ((position = sf_seek(d->sndFile, 0, SEEK_CUR)) == -1) {
+        qWarning() << "Failed to seek in the file:" << sf_strerror(d->sndFile);
+    }
+
+    return position;
+}
+
 bool
 QALSndAudioDecoder::seek(qint64 pos)
 {
@@ -101,12 +112,6 @@ void
 QALSndAudioDecoder::setEncodedData(const QByteArray &encodedData)
 {
     d->encodedData = encodedData;
-}
-
-QByteArray
-QALSndAudioDecoder::decodeAll()
-{
-    return decode(d->encodedData.length());
 }
 
 QByteArray

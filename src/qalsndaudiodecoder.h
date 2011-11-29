@@ -34,12 +34,12 @@ public:
     bool open(const QFile &file);
     bool open(const QUrl &fileUrl);
     bool open(const QString &fileName);
+    qint64 pos();
     bool seek(qint64 pos);
     bool close();
 
     void setEncodedData(const QByteArray &encodedData);
 
-    QByteArray decodeAll();
     QByteArray decode(qint64 maxlen);
     qint64 decode(char *decodedData, qint64 maxlen);
 
