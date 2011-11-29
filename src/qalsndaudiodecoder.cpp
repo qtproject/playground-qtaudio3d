@@ -80,7 +80,7 @@ QALSndAudioDecoder::pos()
 {
     int position;
     if ((position = sf_seek(d->sndFile, 0, SEEK_CUR)) == -1) {
-        qWarning() << "Failed to seek in the file:" << sf_strerror(d->sndFile);
+        qWarning() << "Failed to tell the current position:" << sf_strerror(d->sndFile);
     }
 
     return position;
