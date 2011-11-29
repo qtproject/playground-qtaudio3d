@@ -112,12 +112,15 @@ QALSndAudioDecoder::decodeAll()
 QByteArray
 QALSndAudioDecoder::decode(qint64 maxlen)
 {
-    char *decodedData = 0;
+    QByteArray result;
+    result.reserve(maxlen);
+
+    char *decodedData = result.data();
 
     if (maxlen != decode(decodedData, maxlen))
         qWarning() << "Could not to decode all the data:" << maxlen;
 
-    return QByteArray(decodedData);
+    return result;
 }
 
 qint64
