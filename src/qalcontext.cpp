@@ -56,13 +56,13 @@ bool
 QALContext::create()
 {
     if ((d->alcDevice = alcOpenDevice(d->requestedAttributes.deviceSpecifier().toAscii())) == false) {
-        qWarning() << "Failed to open the device:" << d->requestedAttributes.deviceSpecifier();
+        qWarning() << Q_FUNC_INFO << "Failed to open the device:" << d->requestedAttributes.deviceSpecifier();
         return false;
     }
 
     ALCenum error;
     if ((error = alcGetError(d->alcDevice)) != ALC_NO_ERROR) {
-        qWarning() << "Error before trying to create the context:" << alcGetString(d->alcDevice, error);
+        qWarning() << Q_FUNC_INFO << "Error before trying to create the context:" << alcGetString(d->alcDevice, error);
     };
 
     ALCint attributes[] = {
@@ -76,7 +76,7 @@ QALContext::create()
 
     d->alcContext = alcCreateContext(d->alcDevice, attributes);
     if ((error = alcGetError(d->alcDevice)) != ALC_NO_ERROR) {
-        qWarning() << "Failed to create the context:" << alcGetString(d->alcDevice, error);
+        qWarning() << Q_FUNC_INFO << "Failed to create the context:" << alcGetString(d->alcDevice, error);
         alcCloseDevice(d->alcDevice);
         d->alcDevice = 0;
         return false;
@@ -106,7 +106,7 @@ QALContext::attributes() const
     ALCenum error;
 
     if ((error = alcGetError(d->alcDevice)) != ALC_NO_ERROR) {
-        qWarning() << "Error before trying to create attributes:" << alcGetString(d->alcDevice, error);
+        qWarning() << Q_FUNC_INFO << "Error before trying to create attributes:" << alcGetString(d->alcDevice, error);
     };
 
     QALAttributes attributes;
@@ -143,12 +143,12 @@ QALContext::reset()
 {
     ALCenum error;
     if ((error = alcGetError(d->alcDevice)) != ALC_NO_ERROR) {
-        qWarning() << "Error before trying to destroy the context:" << alcGetString(d->alcDevice, error);
+        qWarning() << Q_FUNC_INFO << "Error before trying to destroy the context:" << alcGetString(d->alcDevice, error);
     };
 
     alcDestroyContext(d->alcContext);
     if ((error = alcGetError(d->alcDevice)) != ALC_NO_ERROR) {
-        qWarning() << "Failed to destroy the context:" << alcGetString(d->alcDevice, error);
+        qWarning() << Q_FUNC_INFO << "Failed to destroy the context:" << alcGetString(d->alcDevice, error);
         return false;
     };
 
@@ -194,13 +194,13 @@ QALContext::deleteBuffer(ALuint bufferId)
 {
     ALenum error;
     if ((error = alGetError()) != ALC_NO_ERROR) {
-        qWarning() << "Error before trying to delete the buffer:" << alGetString(error);
+        qWarning() << Q_FUNC_INFO << "Error before trying to delete the buffer:" << alGetString(error);
     };
 
     alDeleteBuffers(1, &bufferId);
 
     if ((error = alGetError()) != AL_NO_ERROR) {
-        qWarning() << "Failed to delete to buffer:" << alGetString(error);
+        qWarning() << Q_FUNC_INFO << "Failed to delete to buffer:" << alGetString(error);
         return false;
     };
 
@@ -214,14 +214,14 @@ QALContext::deleteBuffers()
 {
     ALenum error;
     if ((error = alGetError()) != ALC_NO_ERROR) {
-        qWarning() << "Error before trying to delete the buffers:" << alGetString(error);
+        qWarning() << Q_FUNC_INFO << "Error before trying to delete the buffers:" << alGetString(error);
     };
 
     QList<ALuint> identifiers = d->loadedBuffers.values();
     alDeleteBuffers(identifiers.count(), identifiers.toVector().data());
 
     if ((error = alGetError()) != AL_NO_ERROR) {
-        qWarning() << "Failed to delete to buffers:" << alGetString(error);
+        qWarning() << Q_FUNC_INFO << "Failed to delete to buffers:" << alGetString(error);
         return false;
     };
 

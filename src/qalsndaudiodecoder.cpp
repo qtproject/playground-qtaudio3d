@@ -68,7 +68,7 @@ QALSndAudioDecoder::open(const QString &fileName)
     SF_INFO sfInfo;
     sfInfo.format = 0;
     if ((d->sndFile = sf_open(fileName.toUtf8().constData(), SFM_READ, &sfInfo)) == 0) {
-        qWarning() << "Failed to open the file" << fileName.toUtf8().constData() << "for decoding:" << sf_strerror(d->sndFile);
+        qWarning() << Q_FUNC_INFO << "Failed to open the file" << fileName.toUtf8().constData() << "for decoding:" << sf_strerror(d->sndFile);
         return false;
     }
 
@@ -80,7 +80,7 @@ QALSndAudioDecoder::pos()
 {
     int position;
     if ((position = sf_seek(d->sndFile, 0, SEEK_CUR)) == -1) {
-        qWarning() << "Failed to tell the current position:" << sf_strerror(d->sndFile);
+        qWarning() << Q_FUNC_INFO << "Failed to tell the current position:" << sf_strerror(d->sndFile);
     }
 
     return position;
@@ -90,7 +90,7 @@ bool
 QALSndAudioDecoder::seek(qint64 pos)
 {
     if (sf_seek(d->sndFile, pos, SEEK_SET) == -1) {
-        qWarning() << "Failed to seek in the file:" << sf_strerror(d->sndFile);
+        qWarning() << Q_FUNC_INFO << "Failed to seek in the file:" << sf_strerror(d->sndFile);
         return false;
     }
 
@@ -101,7 +101,7 @@ bool
 QALSndAudioDecoder::close()
 {
     if (sf_close(d->sndFile)) {
-        qWarning() << "Failed to close the file:" <<  sf_strerror(d->sndFile);
+        qWarning() << Q_FUNC_INFO << "Failed to close the file:" <<  sf_strerror(d->sndFile);
         return false;
     }
 
@@ -123,7 +123,7 @@ QALSndAudioDecoder::decode(qint64 maxlen)
     char *decodedData = result.data();
 
     if (maxlen != decode(decodedData, maxlen))
-        qWarning() << "Could not to decode all the data:" << maxlen;
+        qWarning() << Q_FUNC_INFO << "Could not to decode all the data:" << maxlen;
 
     return result;
 }
