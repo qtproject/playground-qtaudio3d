@@ -37,6 +37,7 @@ class QALSndAudioDecoder::Private
         {
         }
 
+        static sf_count_t fileLengthCallback(void *user_data);
         static sf_count_t seekCallback(sf_count_t offset, int whence, void *user_data);
         static sf_count_t readCallback(void *ptr, sf_count_t count, void *user_data);
         static sf_count_t tellCallback(void *user_data);
@@ -46,6 +47,12 @@ class QALSndAudioDecoder::Private
         QByteArray encodedData;
         SNDFILE *sndFile;
 };
+
+sf_count_t
+QALSndAudioDecoder::Private::fileLengthCallback(void *user_data)
+{
+    return reinterpret_cast<QALSndAudioDecoder::Private*>(user_data)->file.size();
+}
 
 sf_count_t
 QALSndAudioDecoder::Private::seekCallback(sf_count_t offset, int whence, void *user_data)
@@ -122,6 +129,7 @@ QALSndAudioDecoder::open(const QString &fileName)
     sfInfo.format = 0;
 
     SF_VIRTUAL_IO sfVirtualIO;
+    sfVirtualIO.get_filelen = &d->fileLengthCallback;
     sfVirtualIO.seek = &d->seekCallback;
     sfVirtualIO.read = &d->readCallback;
     sfVirtualIO.tell = &d->tellCallback;
