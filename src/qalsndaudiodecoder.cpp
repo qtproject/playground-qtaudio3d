@@ -37,9 +37,61 @@ class QALSndAudioDecoder::Private
         {
         }
 
+        static sf_count_t seekCallback(sf_count_t offset, int whence, void *user_data);
+        static sf_count_t readCallback(void *ptr, sf_count_t count, void *user_data);
+        static sf_count_t tellCallback(void *user_data);
+
+        static QFile file;
+
         QByteArray encodedData;
         SNDFILE *sndFile;
 };
+
+sf_count_t
+QALSndAudioDecoder::Private::seekCallback(sf_count_t offset, int whence, void *user_data)
+{
+    sf_count_t tmpOffset;
+    switch (whence) {
+    case SEEK_SET:
+        if (reinterpret_cast<QALSndAudioDecoder::Private*>(user_data)->file.seek(offset) == true)
+            return offset;
+
+        break;
+
+    case SEEK_CUR:
+        tmpOffset = file.pos() + offset;
+        if (reinterpret_cast<QALSndAudioDecoder::Private*>(user_data)->file.seek(tmpOffset) == true)
+            return tmpOffset;
+
+        break;
+
+    case SEEK_END:
+          tmpOffset = file.size() + offset;
+          if (reinterpret_cast<QALSndAudioDecoder::Private*>(user_data)->file.seek(tmpOffset) == true)
+              return tmpOffset;
+
+          break;
+
+    default:
+          qWarning() << Q_FUNC_INFO << "Failed to see the file:" << file.fileName() << "Invalid whence value:" << whence;
+          break;
+    }
+
+    qWarning() << Q_FUNC_INFO << "Failed to seek the file:" << file.fileName();
+    return -1;
+}
+
+sf_count_t
+QALSndAudioDecoder::Private::readCallback(void *ptr, sf_count_t count, void *user_data)
+{
+    return reinterpret_cast<QALSndAudioDecoder::Private*>(user_data)->file.read(reinterpret_cast<char*>(ptr), count);
+}
+
+sf_count_t
+QALSndAudioDecoder::Private::tellCallback(void *user_data)
+{
+    return reinterpret_cast<QALSndAudioDecoder::Private*>(user_data)->file.pos();
+}
 
 QALSndAudioDecoder::QALSndAudioDecoder()
     : d(new Private)
