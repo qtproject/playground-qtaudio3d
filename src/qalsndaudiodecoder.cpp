@@ -41,7 +41,7 @@ class QALSndAudioDecoder::Private
         static sf_count_t readCallback(void *ptr, sf_count_t count, void *user_data);
         static sf_count_t tellCallback(void *user_data);
 
-        static QFile file;
+        QFile file;
 
         QByteArray encodedData;
         SNDFILE *sndFile;
@@ -50,34 +50,34 @@ class QALSndAudioDecoder::Private
 sf_count_t
 QALSndAudioDecoder::Private::seekCallback(sf_count_t offset, int whence, void *user_data)
 {
-    sf_count_t tmpOffset;
+    QFile &tmpFile = reinterpret_cast<QALSndAudioDecoder::Private*>(user_data)->file;
     switch (whence) {
     case SEEK_SET:
-        if (reinterpret_cast<QALSndAudioDecoder::Private*>(user_data)->file.seek(offset) == true)
+        if (tmpFile.seek(offset) == true)
             return offset;
 
         break;
 
     case SEEK_CUR:
-        tmpOffset = file.pos() + offset;
-        if (reinterpret_cast<QALSndAudioDecoder::Private*>(user_data)->file.seek(tmpOffset) == true)
-            return tmpOffset;
+        offset += tmpFile.pos();
+        if (tmpFile.seek(offset) == true)
+            return offset;
 
         break;
 
     case SEEK_END:
-          tmpOffset = file.size() + offset;
-          if (reinterpret_cast<QALSndAudioDecoder::Private*>(user_data)->file.seek(tmpOffset) == true)
-              return tmpOffset;
+          offset += tmpFile.size();
+          if (tmpFile.seek(offset) == true)
+              return offset;
 
           break;
 
     default:
-          qWarning() << Q_FUNC_INFO << "Failed to see the file:" << file.fileName() << "Invalid whence value:" << whence;
+          qWarning() << Q_FUNC_INFO << "Failed to see the file:" << tmpFile.fileName() << "Invalid whence value:" << whence;
           break;
     }
 
-    qWarning() << Q_FUNC_INFO << "Failed to seek the file:" << file.fileName();
+    qWarning() << Q_FUNC_INFO << "Failed to seek the file:" << tmpFile.fileName();
     return -1;
 }
 
@@ -117,9 +117,16 @@ QALSndAudioDecoder::open(const QUrl &fileUrl)
 bool
 QALSndAudioDecoder::open(const QString &fileName)
 {
+    d->file.setFileName(fileName);
     SF_INFO sfInfo;
     sfInfo.format = 0;
-    if ((d->sndFile = sf_open(fileName.toUtf8().constData(), SFM_READ, &sfInfo)) == 0) {
+
+    SF_VIRTUAL_IO sfVirtualIO;
+    sfVirtualIO.seek = &d->seekCallback;
+    sfVirtualIO.read = &d->readCallback;
+    sfVirtualIO.tell = &d->tellCallback;
+
+    if ((d->sndFile = sf_open_virtual(&sfVirtualIO, SFM_READ, &sfInfo, d)) == 0) {
         qWarning() << Q_FUNC_INFO << "Failed to open the file" << fileName.toUtf8().constData() << "for decoding:" << sf_strerror(d->sndFile);
         return false;
     }
