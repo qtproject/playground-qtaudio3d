@@ -132,6 +132,7 @@ QALSndAudioDecoder::open(const QString &fileName)
     sfVirtualIO.get_filelen = &d->fileLengthCallback;
     sfVirtualIO.seek = &d->seekCallback;
     sfVirtualIO.read = &d->readCallback;
+    sfVirtualIO.write = 0;
     sfVirtualIO.tell = &d->tellCallback;
 
     if ((d->sndFile = sf_open_virtual(&sfVirtualIO, SFM_READ, &sfInfo, d)) == 0) {
