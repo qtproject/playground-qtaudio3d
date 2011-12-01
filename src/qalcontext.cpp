@@ -189,9 +189,10 @@ QALContext::cacheBuffer(const QString& filename)
 
         QByteArray decodedData;
         QByteArray tmpData;
-        int maxlen = qalSndAudioDecoder.channels() * qalSndAudioDecoder.sampleRate() * qalSndAudioDecode.sampleSize();
+        int maxlen = qalSndAudioDecoder.channels() * qalSndAudioDecoder.sampleRate() * qalSndAudioDecoder.sampleSize();
 
-        while ((tmpData = qalSndAudioDecoder.decode(maxlen))) {
+        forever {
+            tmpData = qalSndAudioDecoder.decode(maxlen);
             decodedData.append(tmpData);
             if (tmpData.size() != maxlen)
                 break;
@@ -209,7 +210,23 @@ QALContext::cacheBuffer(const QString& filename)
             return 0;
         };
 
+        int channels = qalSndAudioDecoder.channels();
+        int sampleSize = qalSndAudioDecoder.sampleSize();
+        ALenum format;
 
+        if (channels == 1) {
+            if (sampleSize == 8)
+                format = AL_FORMAT_MONO8;
+            else if (sampleSize == 16)
+                format = AL_FORMAT_MONO16;
+        } else if (channels == 2) {
+            if (sampleSize == 8)
+                format = AL_FORMAT_STEREO8;
+            else if (sampleSize == 16)
+                format = AL_FORMAT_STEREO16;
+        }
+
+        alBufferData(buffer, format, reinterpret_cast<const ALvoid*>(decodedData.constData()), decodedData.size(), qalSndAudioDecoder.sampleRate());
 
         d->loadedBuffers.insert(filename, buffer);
     }
