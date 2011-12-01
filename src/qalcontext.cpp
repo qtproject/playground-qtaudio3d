@@ -189,7 +189,7 @@ QALContext::cacheBuffer(const QString& filename)
 
         QByteArray decodedData;
         QByteArray tmpData;
-        int maxlen = qalSndAudioDecoder.channels() * qalSndAudioDecoder.sampleRate() * qalSndAudioDecoder.sampleSize();
+        int maxlen = qalSndAudioDecoder.channels() * qalSndAudioDecoder.sampleRate() * qalSndAudioDecoder.sampleSize() / 8;
 
         forever {
             tmpData = qalSndAudioDecoder.decode(maxlen);
