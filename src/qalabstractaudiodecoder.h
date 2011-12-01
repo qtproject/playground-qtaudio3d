@@ -42,6 +42,10 @@ public:
 
     virtual void setEncodedData(const QByteArray &encodedData) = 0;
 
+    virtual int channels() const = 0;
+    virtual int sampleRate() const = 0;
+    virtual int sampleSize() const = 0;
+
     virtual QByteArray decode(qint64 maxlen) = 0;
     virtual qint64 decode(char *decodedData, qint64 maxlen) = 0;
 };

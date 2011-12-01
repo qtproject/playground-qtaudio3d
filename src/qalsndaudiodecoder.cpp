@@ -46,6 +46,7 @@ class QALSndAudioDecoder::Private
 
         QByteArray encodedData;
         SNDFILE *sndFile;
+        SF_INFO sfInfo;
 };
 
 sf_count_t
@@ -140,6 +141,8 @@ QALSndAudioDecoder::open(const QString &fileName)
         return false;
     }
 
+    d->sfInfo = sfInfo;
+
     return true;
 }
 
@@ -180,6 +183,24 @@ void
 QALSndAudioDecoder::setEncodedData(const QByteArray &encodedData)
 {
     d->encodedData = encodedData;
+}
+
+int
+QALSndAudioDecoder::channels() const
+{
+    return d->sfInfo.channels;
+}
+
+int
+QALSndAudioDecoder::sampleRate() const
+{
+    return d->sfInfo.samplerate;
+}
+
+int
+QALSndAudioDecoder::sampleSize() const
+{
+    return 16;
 }
 
 QByteArray
