@@ -211,7 +211,7 @@ bool
 QALContext::deleteBuffer(ALuint bufferId)
 {
     ALenum error;
-    if ((error = alGetError()) != ALC_NO_ERROR) {
+    if ((error = alGetError()) != AL_NO_ERROR) {
         qWarning() << Q_FUNC_INFO << "Error before trying to delete the buffer:" << alGetString(error);
     };
 
@@ -231,7 +231,7 @@ bool
 QALContext::deleteBuffers()
 {
     ALenum error;
-    if ((error = alGetError()) != ALC_NO_ERROR) {
+    if ((error = alGetError()) != AL_NO_ERROR) {
         qWarning() << Q_FUNC_INFO << "Error before trying to delete the buffers:" << alGetString(error);
     };
 
