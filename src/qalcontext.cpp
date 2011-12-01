@@ -187,7 +187,15 @@ QALContext::cacheBuffer(const QString& filename)
         if (qalSndAudioDecoder.open(filename) == false)
             return 0;
 
-        // buffer = loadFromFile(filename);
+        QByteArray decodedData;
+        QByteArray tmpData;
+        int maxlen = qalSndAudioDecoder.channels() * qalSndAudioDecoder.sampleRate() * qalSndAudioDecode.sampleSize();
+
+        while ((tmpData = qalSndAudioDecoder.decode(maxlen))) {
+            decodedData.append(tmpData);
+            if (tmpData.size() != maxlen)
+                break;
+        }
 
         ALenum error;
         if ((error = alGetError()) != AL_NO_ERROR) {
@@ -200,6 +208,8 @@ QALContext::cacheBuffer(const QString& filename)
             qWarning() << Q_FUNC_INFO << "Failed to generate a buffer:" << alGetString(error);
             return 0;
         };
+
+
 
         d->loadedBuffers.insert(filename, buffer);
     }
