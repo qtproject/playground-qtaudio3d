@@ -20,6 +20,7 @@
 #include "qalcontext.h"
 
 #include "qalbufferqueue.h"
+#include "qalsndaudiodecoder.h"
 
 #include <QtCore/QDebug>
 
@@ -182,7 +183,24 @@ QALContext::cacheBuffer(const QString& filename)
 {
     ALuint buffer = d->loadedBuffers.value(filename, 0);
     if (!buffer) {
+        QALSndAudioDecoder qalSndAudioDecoder;
+        if (qalSndAudioDecoder.open(filename) == false)
+            return 0;
+
         // buffer = loadFromFile(filename);
+
+        ALenum error;
+        if ((error = alGetError()) != AL_NO_ERROR) {
+            qWarning() << Q_FUNC_INFO << "Error before trying to generate a buffer:" << alGetString(error);
+        };
+
+        alGenBuffers(1, &buffer);
+
+        if ((error = alGetError()) != AL_NO_ERROR) {
+            qWarning() << Q_FUNC_INFO << "Failed to generate a buffer:" << alGetString(error);
+            return 0;
+        };
+
         d->loadedBuffers.insert(filename, buffer);
     }
 
