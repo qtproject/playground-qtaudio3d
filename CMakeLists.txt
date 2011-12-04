@@ -28,9 +28,15 @@ endif(NOT OPENAL_FOUND)
 message(STATUS "OpenAL include: ${OPENAL_INCLUDE_DIR}")
 message(STATUS "OpenAL lib: ${OPENAL_LIBRARY}")
 
+find_package(SndFile)
+if(SNDFILE_FOUND)
+    message(STATUS "SndFile support: enabled")
+else(SNDFILE_FOUND)
+    message(STATUS "SndFile support: disabled")
+endif(SNDFILE_FOUND)
+
 INCLUDE_DIRECTORIES(${OPENAL_INCLUDE_DIR})
 SET(OPENAL_LIBRARIES ${OPENAL_LIBRARY})
-
 
 #Project options, to provide a selective build process
 #Note that some of these are mutually exclusive or just
