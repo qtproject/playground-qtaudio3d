@@ -72,7 +72,7 @@ else()
     add_library(QtOpenAL SHARED ${QtOpenAL_SRCS})
 endif()
 
-target_link_libraries(QtOpenAL ${OPENAL_LIBRARIES} ${QT_QTCORE_LIBRARY})
+target_link_libraries(QtOpenAL ${OPENAL_LIBRARIES} ${SNDFILE_LIBRARIES} ${QT_QTCORE_LIBRARY})
 
 set(QTOPENAL_LIBS
     QtOpenAL

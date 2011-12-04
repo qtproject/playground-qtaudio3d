@@ -35,7 +35,7 @@ else(SNDFILE_FOUND)
     message(STATUS "SndFile support: disabled")
 endif(SNDFILE_FOUND)
 
-INCLUDE_DIRECTORIES(${OPENAL_INCLUDE_DIR})
+INCLUDE_DIRECTORIES(${OPENAL_INCLUDE_DIR} ${SNDFILE_INCLUDE_DIRS})
 SET(OPENAL_LIBRARIES ${OPENAL_LIBRARY})
 
 #Project options, to provide a selective build process
