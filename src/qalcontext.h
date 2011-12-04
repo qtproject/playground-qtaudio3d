@@ -25,7 +25,6 @@
 #include "qalattributes.h"
 
 class QALBufferQueue;
-class QALAttributes;
 
 class Q_OPENAL_EXPORT QALContext
 {
