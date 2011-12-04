@@ -20,6 +20,7 @@
 cmake_minimum_required(VERSION 2.8)
 project(QtOpenAL)
 
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 find_package(OpenAL)
 if(NOT OPENAL_FOUND)
     message(FATAL_ERROR "OpenAL not found!\nPlease try setting the OPENALDIR environment variable and try again.")
