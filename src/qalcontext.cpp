@@ -228,6 +228,11 @@ QALContext::cacheBuffer(const QString& filename)
 
         alBufferData(buffer, format, reinterpret_cast<const ALvoid*>(decodedData.constData()), decodedData.size(), qalSndAudioDecoder.sampleRate());
 
+        if ((error = alGetError()) != AL_NO_ERROR) {
+            qWarning() << Q_FUNC_INFO << "Failed to fill the buffer with audio data:" << alGetString(error);
+            return 0;
+        };
+
         d->loadedBuffers.insert(filename, buffer);
     }
 
