@@ -46,13 +46,15 @@ class QALVorbisFileAudioDecoder::Private
         QFile file;
 
         QByteArray encodedData;
-        OggVorbis_File* oggVorbisFile;
+        OggVorbis_File *oggVorbisFile;
+        vorbis_info vorbisInfo;
 };
 
 int
 QALVorbisFileAudioDecoder::Private::closeCallback(void *datasource)
 {
     reinterpret_cast<QALVorbisFileAudioDecoder::Private*>(datasource)->file.close();
+
     return 0;
 }
 
@@ -129,16 +131,18 @@ QALVorbisFileAudioDecoder::open(const QString &fileName)
     d->file.setFileName(fileName);
 
     ov_callbacks oggVorbisCallbacks;
-    oggVorbisCallbacks.close_func = &d->fileLengthCallback;
-    oggVorbisCallbacks.seek_func = &d->seekCallback;
+    oggVorbisCallbacks.close_func = &d->closeCallback;
     oggVorbisCallbacks.read_func = &d->readCallback;
+    oggVorbisCallbacks.seek_func = &d->seekCallback;
     oggVorbisCallbacks.tell_func = &d->tellCallback;
 
-    int error = 0;
-    if ((error = ov_open_callbacks(d, d->oggVorbisFile, 0, 0, &oggVofbisCallback) < 0)) {
+    int error;
+    if ((error = ov_open_callbacks(d, d->oggVorbisFile, 0, 0, oggVorbisCallbacks) < 0)) {
         qWarning() << Q_FUNC_INFO << "Failed to open the file" << fileName.toUtf8().constData() << "for decoding:" << error;
         return false;
     }
+
+    d->vorbisInfo = *ov_info(d->oggVorbisFile, -1);
 
     return true;
 }
@@ -157,8 +161,9 @@ QALVorbisFileAudioDecoder::pos()
 bool
 QALVorbisFileAudioDecoder::seek(qint64 pos)
 {
-    if (sf_seek(d->sndFile, pos, SEEK_SET) == -1) {
-        qWarning() << Q_FUNC_INFO << "Failed to seek in the file:" << sf_strerror(d->sndFile);
+    int error;
+    if ((error = sf_seek(d->sndFile, pos, SEEK_SET) == -1)) {
+        qWarning() << Q_FUNC_INFO << "Failed to seek in the file:" << error;
         return false;
     }
 
@@ -168,8 +173,9 @@ QALVorbisFileAudioDecoder::seek(qint64 pos)
 bool
 QALVorbisFileAudioDecoder::close()
 {
-    if (ov_clear(d->oggVorbisFile)) {
-        qWarning() << Q_FUNC_INFO << "Failed to close the file:" <<  sf_strerror(d->sndFile);
+    int error;
+    if ((error = ov_clear(d->oggVorbisFile))) {
+        qWarning() << Q_FUNC_INFO << "Failed to close the file:" << error;
         return false;
     }
 
@@ -185,19 +191,19 @@ QALVorbisFileAudioDecoder::setEncodedData(const QByteArray &encodedData)
 int
 QALVorbisFileAudioDecoder::channels() const
 {
-    return d->sfInfo.channels;
+    return d->vorbisInfo.channels;
 }
 
 int
 QALVorbisFileAudioDecoder::sampleRate() const
 {
-    return d->sfInfo.samplerate;
+    return d->vorbisInfo.rate;
 }
 
 int
 QALVorbisFileAudioDecoder::sampleSize() const
 {
-    return 16;
+    return d->vorbisInfo.bitrate_nominal;
 }
 
 QByteArray

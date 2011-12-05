@@ -51,6 +51,7 @@ set(QtOpenAL_SRCS
     qalcontext.cpp
     qalsndaudiodecoder.cpp
     qalsource.cpp
+    qalvorbisfileaudiodecoder.cpp
 )
 
 set(QtOpenAL_HEADERS
@@ -61,6 +62,7 @@ set(QtOpenAL_HEADERS
     qalcontext.h
     qalsndaudiodecoder.h
     qalsource.h
+    qalvorbisfileaudiodecoder.h
 	${CMAKE_CURRENT_BINARY_DIR}/qtopenal_global.h
 )
 
