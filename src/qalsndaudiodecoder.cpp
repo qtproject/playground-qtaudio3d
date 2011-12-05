@@ -81,7 +81,7 @@ QALSndAudioDecoder::Private::seekCallback(sf_count_t offset, int whence, void *u
           break;
 
     default:
-          qWarning() << Q_FUNC_INFO << "Failed to see the file:" << tmpFile.fileName() << "Invalid whence value:" << whence;
+          qWarning() << Q_FUNC_INFO << "Failed to seek the file:" << tmpFile.fileName() << "Invalid whence value:" << whence;
           break;
     }
 
