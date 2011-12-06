@@ -29,6 +29,13 @@ endif(NOT OPENAL_FOUND)
 message(STATUS "OpenAL include: ${OPENAL_INCLUDE_DIR}")
 message(STATUS "OpenAL lib: ${OPENAL_LIBRARY}")
 
+find_package(OggVorbis)
+if(OGGVORBIS_FOUND)
+    message(STATUS "VorbisFile support: enabled")
+else(OGGVORBIS_FOUND)
+    message(STATUS "VorbisFile support: disabled")
+endif(OGGVORBIS_FOUND)
+
 find_package(SndFile)
 if(SNDFILE_FOUND)
     message(STATUS "SndFile support: enabled")
