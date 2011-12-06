@@ -151,8 +151,8 @@ qint64
 QALVorbisFileAudioDecoder::pos()
 {
     int retval;
-    if ((error = sf_seek(d->sndFile, 0, SEEK_CUR)) == -1) {
-        qWarning() << Q_FUNC_INFO << "Failed to tell the current position:" << retval;
+    if ((retval = ov_pcm_tell(d->oggVorbisFile)) == OV_EINVAL) {
+        qWarning() << Q_FUNC_INFO << "Failed to tell the current position because the argument was invalid. The requested bitstream did not exist.";
     }
 
     return retval;
