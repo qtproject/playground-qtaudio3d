@@ -30,6 +30,7 @@ class QALSndFileAudioDecoder::Private
 {
     public:
         Private()
+            : sndFile(0)
         {
         }
 
