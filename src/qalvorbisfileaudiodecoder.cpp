@@ -203,7 +203,7 @@ QALVorbisFileAudioDecoder::sampleRate() const
 int
 QALVorbisFileAudioDecoder::sampleSize() const
 {
-    return d->vorbisInfo.bitrate_nominal;
+    return 16;
 }
 
 QByteArray
