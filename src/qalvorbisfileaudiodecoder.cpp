@@ -47,7 +47,7 @@ class QALVorbisFileAudioDecoder::Private
         QFile file;
 
         QByteArray encodedData;
-        OggVorbis_File *oggVorbisFile;
+        OggVorbis_File oggVorbisFile;
         vorbis_info vorbisInfo;
 
         int bitStream;
@@ -140,12 +140,12 @@ QALVorbisFileAudioDecoder::open(const QString &fileName)
     oggVorbisCallbacks.tell_func = &d->tellCallback;
 
     int error;
-    if ((error = ov_open_callbacks(d, d->oggVorbisFile, 0, 0, oggVorbisCallbacks) < 0)) {
+    if ((error = ov_open_callbacks(d, &d->oggVorbisFile, 0, 0, oggVorbisCallbacks) < 0)) {
         qWarning() << Q_FUNC_INFO << "Failed to open the file" << fileName.toUtf8().constData() << "for decoding:" << error;
         return false;
     }
 
-    d->vorbisInfo = *ov_info(d->oggVorbisFile, -1);
+    d->vorbisInfo = *ov_info(&d->oggVorbisFile, -1);
 
     return true;
 }
@@ -154,7 +154,7 @@ qint64
 QALVorbisFileAudioDecoder::pos()
 {
     int retval;
-    if ((retval = ov_pcm_tell(d->oggVorbisFile)) == OV_EINVAL) {
+    if ((retval = ov_pcm_tell(&d->oggVorbisFile)) == OV_EINVAL) {
         qWarning() << Q_FUNC_INFO << "Failed to tell the current position because the argument was invalid. The requested bitstream did not exist.";
     }
 
@@ -165,7 +165,7 @@ bool
 QALVorbisFileAudioDecoder::seek(qint64 pos)
 {
     int retval;
-    if ((retval = ov_pcm_seek(d->oggVorbisFile, pos) < 0)) {
+    if ((retval = ov_pcm_seek(&d->oggVorbisFile, pos) < 0)) {
         qWarning() << Q_FUNC_INFO << "Failed to seek in the file:" << retval;
         return false;
     }
@@ -177,7 +177,7 @@ bool
 QALVorbisFileAudioDecoder::close()
 {
     int error;
-    if ((error = ov_clear(d->oggVorbisFile))) {
+    if ((error = ov_clear(&d->oggVorbisFile))) {
         qWarning() << Q_FUNC_INFO << "Failed to close the file:" << error;
         return false;
     }
@@ -227,8 +227,8 @@ qint64
 QALVorbisFileAudioDecoder::decode(char *decodedData, qint64 maxlen)
 {
 #if Q_BYTE_ORDER == Q_BIG_ENDIAN
-    return ov_read(d->oggVorbisFile, decodedData, maxlen, 1, 2, 1, &d->bitStream);
+    return ov_read(&d->oggVorbisFile, decodedData, maxlen, 1, 2, 1, &d->bitStream);
 #elif Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-    return ov_read(d->oggVorbisFile, decodedData, maxlen, 0, 2, 1, &d->bitStream);
+    return ov_read(&d->oggVorbisFile, decodedData, maxlen, 0, 2, 1, &d->bitStream);
 #endif
 }
