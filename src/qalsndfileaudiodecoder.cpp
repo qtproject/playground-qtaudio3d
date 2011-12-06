@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include "qalsndaudiodecoder.h"
+#include "qalsndfileaudiodecoder.h"
 
 #include <QtCore/QFile>
 #include <QtCore/QString>
@@ -26,7 +26,7 @@
 
 #include <sndfile.h>
 
-class QALSndAudioDecoder::Private
+class QALSndFileAudioDecoder::Private
 {
     public:
         Private()
@@ -50,15 +50,15 @@ class QALSndAudioDecoder::Private
 };
 
 sf_count_t
-QALSndAudioDecoder::Private::fileLengthCallback(void *user_data)
+QALSndFileAudioDecoder::Private::fileLengthCallback(void *user_data)
 {
-    return reinterpret_cast<QALSndAudioDecoder::Private*>(user_data)->file.size();
+    return reinterpret_cast<QALSndFileAudioDecoder::Private*>(user_data)->file.size();
 }
 
 sf_count_t
-QALSndAudioDecoder::Private::seekCallback(sf_count_t offset, int whence, void *user_data)
+QALSndFileAudioDecoder::Private::seekCallback(sf_count_t offset, int whence, void *user_data)
 {
-    QFile &tmpFile = reinterpret_cast<QALSndAudioDecoder::Private*>(user_data)->file;
+    QFile &tmpFile = reinterpret_cast<QALSndFileAudioDecoder::Private*>(user_data)->file;
     switch (whence) {
     case SEEK_SET:
         if (tmpFile.seek(offset) == true)
@@ -90,40 +90,40 @@ QALSndAudioDecoder::Private::seekCallback(sf_count_t offset, int whence, void *u
 }
 
 sf_count_t
-QALSndAudioDecoder::Private::readCallback(void *ptr, sf_count_t count, void *user_data)
+QALSndFileAudioDecoder::Private::readCallback(void *ptr, sf_count_t count, void *user_data)
 {
-    return reinterpret_cast<QALSndAudioDecoder::Private*>(user_data)->file.read(reinterpret_cast<char*>(ptr), count);
+    return reinterpret_cast<QALSndFileAudioDecoder::Private*>(user_data)->file.read(reinterpret_cast<char*>(ptr), count);
 }
 
 sf_count_t
-QALSndAudioDecoder::Private::tellCallback(void *user_data)
+QALSndFileAudioDecoder::Private::tellCallback(void *user_data)
 {
-    return reinterpret_cast<QALSndAudioDecoder::Private*>(user_data)->file.pos();
+    return reinterpret_cast<QALSndFileAudioDecoder::Private*>(user_data)->file.pos();
 }
 
-QALSndAudioDecoder::QALSndAudioDecoder()
+QALSndFileAudioDecoder::QALSndFileAudioDecoder()
     : d(new Private)
 {
 }
 
-QALSndAudioDecoder::~QALSndAudioDecoder()
+QALSndFileAudioDecoder::~QALSndFileAudioDecoder()
 {
 }
 
 bool
-QALSndAudioDecoder::open(const QFile &file)
+QALSndFileAudioDecoder::open(const QFile &file)
 {
     return open(file.fileName());
 }
 
 bool
-QALSndAudioDecoder::open(const QUrl &fileUrl)
+QALSndFileAudioDecoder::open(const QUrl &fileUrl)
 {
     return open(fileUrl.toLocalFile());
 }
 
 bool
-QALSndAudioDecoder::open(const QString &fileName)
+QALSndFileAudioDecoder::open(const QString &fileName)
 {
     d->file.setFileName(fileName);
     SF_INFO sfInfo;
@@ -147,7 +147,7 @@ QALSndAudioDecoder::open(const QString &fileName)
 }
 
 qint64
-QALSndAudioDecoder::pos()
+QALSndFileAudioDecoder::pos()
 {
     int position;
     if ((position = sf_seek(d->sndFile, 0, SEEK_CUR)) == -1) {
@@ -158,7 +158,7 @@ QALSndAudioDecoder::pos()
 }
 
 bool
-QALSndAudioDecoder::seek(qint64 pos)
+QALSndFileAudioDecoder::seek(qint64 pos)
 {
     if (sf_seek(d->sndFile, pos, SEEK_SET) == -1) {
         qWarning() << Q_FUNC_INFO << "Failed to seek in the file:" << sf_strerror(d->sndFile);
@@ -169,7 +169,7 @@ QALSndAudioDecoder::seek(qint64 pos)
 }
 
 bool
-QALSndAudioDecoder::close()
+QALSndFileAudioDecoder::close()
 {
     if (sf_close(d->sndFile)) {
         qWarning() << Q_FUNC_INFO << "Failed to close the file:" <<  sf_strerror(d->sndFile);
@@ -180,31 +180,31 @@ QALSndAudioDecoder::close()
 }
 
 void
-QALSndAudioDecoder::setEncodedData(const QByteArray &encodedData)
+QALSndFileAudioDecoder::setEncodedData(const QByteArray &encodedData)
 {
     d->encodedData = encodedData;
 }
 
 int
-QALSndAudioDecoder::channels() const
+QALSndFileAudioDecoder::channels() const
 {
     return d->sfInfo.channels;
 }
 
 int
-QALSndAudioDecoder::sampleRate() const
+QALSndFileAudioDecoder::sampleRate() const
 {
     return d->sfInfo.samplerate;
 }
 
 int
-QALSndAudioDecoder::sampleSize() const
+QALSndFileAudioDecoder::sampleSize() const
 {
     return 16;
 }
 
 QByteArray
-QALSndAudioDecoder::decode(qint64 maxlen)
+QALSndFileAudioDecoder::decode(qint64 maxlen)
 {
     QByteArray result;
     result.reserve(maxlen);
@@ -218,7 +218,7 @@ QALSndAudioDecoder::decode(qint64 maxlen)
 }
 
 qint64
-QALSndAudioDecoder::decode(char *decodedData, qint64 maxlen)
+QALSndFileAudioDecoder::decode(char *decodedData, qint64 maxlen)
 {
     return sf_readf_short(d->sndFile, reinterpret_cast<short*>(decodedData), maxlen);
 }

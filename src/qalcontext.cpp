@@ -20,7 +20,7 @@
 #include "qalcontext.h"
 
 #include "qalbufferqueue.h"
-#include "qalsndaudiodecoder.h"
+#include "qalsndfileaudiodecoder.h"
 
 #include <QtCore/QDebug>
 
@@ -183,7 +183,7 @@ QALContext::cacheBuffer(const QString& filename)
 {
     ALuint buffer = d->loadedBuffers.value(filename, 0);
     if (!buffer) {
-        QALSndAudioDecoder qalSndAudioDecoder;
+        QALSndFileAudioDecoder qalSndAudioDecoder;
         if (qalSndAudioDecoder.open(filename) == false)
             return 0;
 

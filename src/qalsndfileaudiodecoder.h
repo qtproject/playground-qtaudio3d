@@ -24,12 +24,12 @@
 
 #include "qalabstractaudiodecoder.h"
 
-class Q_OPENAL_EXPORT QALSndAudioDecoder : QALAbstractAudioDecoder
+class Q_OPENAL_EXPORT QALSndFileAudioDecoder : QALAbstractAudioDecoder
 {
     //Q_DECLARE_PRIVATE(QALAbstractAudioDecoder)
 public:
-    QALSndAudioDecoder();
-    virtual ~QALSndAudioDecoder();
+    QALSndFileAudioDecoder();
+    virtual ~QALSndFileAudioDecoder();
 
     bool open(const QFile &file);
     bool open(const QUrl &fileUrl);
