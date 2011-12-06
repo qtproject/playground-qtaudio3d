@@ -225,5 +225,9 @@ QALVorbisFileAudioDecoder::decode(qint64 maxlen)
 qint64
 QALVorbisFileAudioDecoder::decode(char *decodedData, qint64 maxlen)
 {
-    return ov_read(d->oggVorbisFile, decodedData, maxlen, 2, 1, &d->bitStream);
+#if Q_BYTE_ORDER == Q_BIG_ENDIAN
+    return ov_read(d->oggVorbisFile, decodedData, maxlen, 1, 2, 1, &d->bitStream);
+#elif Q_BYTE_ORDER == Q_LITTLE_ENDIAN
+    return ov_read(d->oggVorbisFile, decodedData, maxlen, 0, 2, 1, &d->bitStream);
+#endif
 }
