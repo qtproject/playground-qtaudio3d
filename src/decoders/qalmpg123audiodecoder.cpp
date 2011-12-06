@@ -28,23 +28,31 @@ class QALMpg123AudioDecoder::Private
 {
     public:
         Private()
-            : mpg123Handle(0)
+            : referenceCounter(0)
+            , mpg123Handle(0)
         {
-            int error;
-            if ((error = mpg123_init()) == MPG123_OK) {
-                qWarning() << Q_FUNC_INFO << "Failed to initialize the mpg123 library:" << error;
+            referenceCounter.ref();
+            if (int(referenceCounter) == 1) {
+                int error;
+                if ((error = mpg123_init()) == MPG123_OK) {
+                    qWarning() << Q_FUNC_INFO << "Failed to initialize the mpg123 library:" << error;
+                }
             }
         }
 
         ~Private()
         {
-            mpg123_exit();
+            if (referenceCounter.deref() == false) {
+                mpg123_exit();
+            }
         }
 
         static sf_count_t fileLengthCallback(void *user_data);
         static sf_count_t seekCallback(sf_count_t offset, int whence, void *user_data);
         static sf_count_t readCallback(void *ptr, sf_count_t count, void *user_data);
         static sf_count_t tellCallback(void *user_data);
+
+        QAtomicInt referenceCounter;
 
         QFile file;
 
