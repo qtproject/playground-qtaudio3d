@@ -48,6 +48,8 @@ class QALVorbisFileAudioDecoder::Private
         QByteArray encodedData;
         OggVorbis_File *oggVorbisFile;
         vorbis_info vorbisInfo;
+
+        int bitStream;
 };
 
 int
@@ -223,5 +225,5 @@ QALVorbisFileAudioDecoder::decode(qint64 maxlen)
 qint64
 QALVorbisFileAudioDecoder::decode(char *decodedData, qint64 maxlen)
 {
-    return sf_readf_short(d->sndFile, reinterpret_cast<short*>(decodedData), maxlen);
+    return ov_read(d->oggVorbisFile, decodedData, maxlen, 2, 1, &d->bitStream);
 }
