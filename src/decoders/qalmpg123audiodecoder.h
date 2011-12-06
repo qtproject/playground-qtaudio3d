@@ -24,7 +24,7 @@
 
 #include "qalabstractaudiodecoder.h"
 
-class Q_OPENAL_EXPORT QALMpg123FileAudioDecoder : QALAbstractAudioDecoder
+class Q_OPENAL_EXPORT QALMpg123AudioDecoder : QALAbstractAudioDecoder
 {
     //Q_DECLARE_PRIVATE(QALMpg123AudioDecoder)
 public:
