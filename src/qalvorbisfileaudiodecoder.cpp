@@ -161,9 +161,9 @@ QALVorbisFileAudioDecoder::pos()
 bool
 QALVorbisFileAudioDecoder::seek(qint64 pos)
 {
-    int error;
-    if ((error = sf_seek(d->sndFile, pos, SEEK_SET) == -1)) {
-        qWarning() << Q_FUNC_INFO << "Failed to seek in the file:" << error;
+    int retval;
+    if ((retval = ov_pcm_seek(d->oggVorbisFile, pos) < 0)) {
+        qWarning() << Q_FUNC_INFO << "Failed to seek in the file:" << retval;
         return false;
     }
 
