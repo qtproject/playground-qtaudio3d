@@ -48,8 +48,6 @@ class QALVorbisFileAudioDecoder::Private
         QByteArray encodedData;
         OggVorbis_File *oggVorbisFile;
         vorbis_info vorbisInfo;
-
-        int bitStream;
 };
 
 int
@@ -152,12 +150,12 @@ QALVorbisFileAudioDecoder::open(const QString &fileName)
 qint64
 QALVorbisFileAudioDecoder::pos()
 {
-    int position;
-    if ((position = sf_seek(d->sndFile, 0, SEEK_CUR)) == -1) {
-        qWarning() << Q_FUNC_INFO << "Failed to tell the current position:" << sf_strerror(d->sndFile);
+    int retval;
+    if ((error = sf_seek(d->sndFile, 0, SEEK_CUR)) == -1) {
+        qWarning() << Q_FUNC_INFO << "Failed to tell the current position:" << retval;
     }
 
-    return position;
+    return retval;
 }
 
 bool
@@ -225,9 +223,11 @@ QALVorbisFileAudioDecoder::decode(qint64 maxlen)
 qint64
 QALVorbisFileAudioDecoder::decode(char *decodedData, qint64 maxlen)
 {
+    int bitStream;
+
 #if Q_BYTE_ORDER == Q_BIG_ENDIAN
-    return ov_read(d->oggVorbisFile, decodedData, maxlen, 1, 2, 1, &d->bitStream);
+    return ov_read(d->oggVorbisFile, decodedData, maxlen, 1, 2, 1, &bitStream);
 #elif Q_BYTE_ORDER == Q_LITTLE_ENDIAN
-    return ov_read(d->oggVorbisFile, decodedData, maxlen, 0, 2, 1, &d->bitStream);
+    return ov_read(d->oggVorbisFile, decodedData, maxlen, 0, 2, 1, &bitStream);
 #endif
 }
