@@ -20,7 +20,7 @@
 #include "qalcontext.h"
 
 #include "qalbufferqueue.h"
-#include "qalsndfileaudiodecoder.h"
+#include "decoders/qalsndfileaudiodecoder.h"
 
 #include <QtCore/QDebug>
 
