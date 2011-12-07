@@ -172,8 +172,8 @@ QALFlacAudioDecoder::pos()
 bool
 QALFlacAudioDecoder::seek(qint64 pos)
 {
-    if (sf_seek(d->sndFile, pos, SEEK_SET) == -1) {
-        qWarning() << Q_FUNC_INFO << "Failed to seek in the file:" << sf_strerror(d->sndFile);
+    if (FLAC__stream_decoder_seek_absolute(d->flacStreamDecoder, pos) == false) {
+        qWarning() << Q_FUNC_INFO << "Failed to seek in the file";
         return false;
     }
 
@@ -230,5 +230,13 @@ QALFlacAudioDecoder::decode(qint64 maxlen)
 qint64
 QALFlacAudioDecoder::decode(char *decodedData, qint64 maxlen)
 {
+    if (FLAC__stream_decoder_get_state(d->flacStreamDecoder) == FLAC__STREAM_DECODER_SEEK_ERROR
+        && FLAC__stream_decoder_reset(d->flacStreamDecoder) == false)
+        {
+            qWarning() << Q_FUNC_INFO << "Failed to allocate memory while resetting before decoding";;
+            return false;
+        }
+    }
+
     return sf_readf_short(d->sndFile, reinterpret_cast<short*>(decodedData), maxlen);
 }
