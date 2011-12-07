@@ -56,7 +56,21 @@ class QALFlacAudioDecoder::Private
 FLAC__StreamDecoderReadStatus
 QALFlacAudioDecoder::Private::readCallback(const FLAC__StreamDecoder *decoder, FLAC__byte buffer[], size_t *bytes, void *client_data)
 {
-    return reinterpret_cast<QALFlacAudioDecoder::Private*>(client_data)->file.read(reinterpret_cast<char*>(ptr), count);
+    Q_UNUSED(decoder)
+
+    if (*bytes <= 0)
+        return FLAC__STREAM_DECODER_READ_STATUS_ABORT;
+
+    int retval;
+    if ((retval = reinterpret_cast<QALFlacAudioDecoder::Private*>(client_data)->file.read(reinterpret_cast<char*>(buffer), *bytes)) == -1) {
+        qWarning() << Q_FUNC_INFO << "Failed to read the data from the file";
+        return FLAC__STREAM_DECODER_READ_STATUS_ABORT;
+    }
+
+    if (retval != 0)
+        return FLAC__STREAM_DECODER_READ_STATUS_CONTINUE;
+
+    return FLAC__STREAM_DECODER_READ_STATUS_END_OF_STREAM;
 }
 
 FLAC__StreamDecoderSeekStatus
