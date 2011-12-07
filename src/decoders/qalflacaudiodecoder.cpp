@@ -91,7 +91,7 @@ QALFlacAudioDecoder::Private::tellCallback(const FLAC__StreamDecoder *decoder, F
 {
     Q_UNUSED(decoder)
 
-    *absolute_path_offset = reinterpret_cast<QALFlacAudioDecoder::Private*>(client_data)->file.pos();
+    *absolute_byte_offset = reinterpret_cast<QALFlacAudioDecoder::Private*>(client_data)->file.pos();
 
     return FLAC__STREAM_DECODER_TELL_STATUS_OK;
 }
