@@ -23,18 +23,20 @@
 #include <QtCore/QString>
 #include <QtCore/QUrl>
 #include <QtCore/QDebug>
+#include <QtCore/QMutexLocker>
 
 class QALMpg123AudioDecoder::Private
 {
     public:
         Private()
-            : referenceCounter(0)
-            , mpg123Handle(0)
+            : mpg123Handle(0)
         {
-            referenceCounter.ref();
-            if (int(referenceCounter) == 1) {
+            QMutexLocker mutexLocker;
+            if (++referenceCounter == 1) {
                 int error;
                 if ((error = mpg123_init()) == MPG123_OK) {
+                    isValid = true;
+                } else {
                     qWarning() << Q_FUNC_INFO << "Failed to initialize the mpg123 library:" << error;
                 }
             }
@@ -42,7 +44,8 @@ class QALMpg123AudioDecoder::Private
 
         ~Private()
         {
-            if (referenceCounter.deref() == false) {
+            QMutexLocker mutexLocker;
+            if (--referenceCounter == 0) {
                 mpg123_exit();
             }
         }
@@ -52,7 +55,8 @@ class QALMpg123AudioDecoder::Private
         static sf_count_t readCallback(void *ptr, sf_count_t count, void *user_data);
         static sf_count_t tellCallback(void *user_data);
 
-        QAtomicInt referenceCounter;
+        static int referenceCounter;
+        static bool isValid;
 
         QFile file;
 
@@ -61,6 +65,9 @@ class QALMpg123AudioDecoder::Private
         SNDFILE *sndFile;
         SF_INFO sfInfo;
 };
+
+bool QALMpg123AudioDecoder::Private::referenceCounter = 0;
+bool QALMpg123AudioDecoder::Private::isValid = false;
 
 sf_count_t
 QALMpg123AudioDecoder::Private::fileLengthCallback(void *user_data)
