@@ -91,7 +91,15 @@ QALFlacAudioDecoder::Private::tellCallback(const FLAC__StreamDecoder *decoder, F
 {
     Q_UNUSED(decoder)
 
-    *absolute_byte_offset = reinterpret_cast<QALFlacAudioDecoder::Private*>(client_data)->file.pos();
+    QFile &tmpFile = reinterpret_cast<QALFlacAudioDecoder::Private*>(client_data)->file;
+    tmpFile.unsetError();
+
+    *absolute_byte_offset = tmpFile.pos();
+
+    if (tmpFile.error() != QFile::NoError) {
+        qWarning() << Q_FUNC_INFO << "Failed to tell the current position:" << tmpFile.errorString();
+        return FLAC__STREAM_DECODER_TELL_STATUS_ERROR;
+    }
 
     return FLAC__STREAM_DECODER_TELL_STATUS_OK;
 }
