@@ -69,8 +69,6 @@ class QALMpg123AudioDecoder::Private
 
         QByteArray encodedData;
         mpg123_handle *mpg123Handle;
-        SNDFILE *sndFile;
-        SF_INFO sfInfo;
 };
 
 bool QALMpg123AudioDecoder::Private::referenceCounter = 0;
