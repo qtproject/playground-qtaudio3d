@@ -195,7 +195,10 @@ QALFlacAudioDecoder::pos()
 {
     FLAC__uint64 position;
     if (FLAC__stream_decoder_get_decode_position(d->flacStreamDecoder, &position) == false) {
-        qWarning() << Q_FUNC_INFO << "Failed to tell the current position";
+        qWarning() << Q_FUNC_INFO << "Failed to tell the current position: the"
+            "stream is not native FLAC, or there was an error from the 'tell'"
+            "callback or it returned"
+            "FLAC__STREAM_DECODER_TELL_STATUS_UNSUPPORTED.";
     }
 
     return position;
