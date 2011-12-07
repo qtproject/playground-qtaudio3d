@@ -133,7 +133,7 @@ QALFlacAudioDecoder::open(const QString &fileName)
     d->file.setFileName(fileName);
 
     d->flacStreamDecoder = *FLAC__stream_decoder_new();
-    if (d->flacStreamDecoder) {
+    if (d->flacStreamDecoder == 0) {
         qWarning() << Q_FUNC_INFO << "Could not allocate enough memory for the flac stream decoder handle";
         return false;
     }
