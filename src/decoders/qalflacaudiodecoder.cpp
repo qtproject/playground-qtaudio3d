@@ -168,7 +168,7 @@ QALFlacAudioDecoder::open(const QString &fileName)
 {
     d->file.setFileName(fileName);
 
-    d->flacStreamDecoder = *FLAC__stream_decoder_new();
+    d->flacStreamDecoder = FLAC__stream_decoder_new();
     if (d->flacStreamDecoder == 0) {
         qWarning() << Q_FUNC_INFO << "Could not allocate enough memory for the flac stream decoder handle";
         return false;
@@ -184,15 +184,8 @@ QALFlacAudioDecoder::open(const QString &fileName)
             return;
         }   
 
-        FLAC__stream_decoder_finish(flacFile);
+        FLAC__stream_decoder_finish(d->flacStreamDecoder);
     }   
-
-    if ((d->sndFile = sf_open_virtual(&sfVirtualIO, SFM_READ, &sfInfo, d)) == 0) {
-        qWarning() << Q_FUNC_INFO << "Failed to open the file" << fileName.toUtf8().constData() << "for decoding:" << sf_strerror(d->sndFile);
-        return false;
-    }
-
-    d->sfInfo = sfInfo;
 
     return true;
 }
@@ -200,9 +193,9 @@ QALFlacAudioDecoder::open(const QString &fileName)
 qint64
 QALFlacAudioDecoder::pos()
 {
-    int position;
-    if ((position = sf_seek(d->sndFile, 0, SEEK_CUR)) == -1) {
-        qWarning() << Q_FUNC_INFO << "Failed to tell the current position:" << sf_strerror(d->sndFile);
+    FLAC__uint64 position;
+    if (FLAC__stream_decoder_get_decode_position(d->flacStreamDecoder, &position) == false) {
+        qWarning() << Q_FUNC_INFO << "Failed to tell the current position";
     }
 
     return position;
