@@ -32,15 +32,10 @@ class QALFlacAudioDecoder::Private
         Private()
             : flacStreamDecoder(0)
         {
-            int error;
-            if ((error = mpg123_init()) == MPG123_OK) {
-                qWarning() << Q_FUNC_INFO << "Failed to initialize the mpg123 library:" << error;
-            }
         }
 
         ~Private()
         {
-            mpg123_exit();
         }
 
         static FLAC__StreamDecoderReadStatus readCallback(const FLAC__StreamDecoder *decoder, FLAC__byte buffer[], size_t *bytes, void *client_data);
