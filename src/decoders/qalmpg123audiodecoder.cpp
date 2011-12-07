@@ -25,6 +25,8 @@
 #include <QtCore/QDebug>
 #include <QtCore/QMutexLocker>
 
+#include <mpg123.h>
+
 class QALMpg123AudioDecoder::Private
 {
     public:
