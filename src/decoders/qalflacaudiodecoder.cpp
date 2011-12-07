@@ -43,10 +43,14 @@ class QALFlacAudioDecoder::Private
             mpg123_exit();
         }
 
-        static sf_count_t fileLengthCallback(void *user_data);
-        static sf_count_t seekCallback(sf_count_t offset, int whence, void *user_data);
-        static sf_count_t readCallback(void *ptr, sf_count_t count, void *user_data);
-        static sf_count_t tellCallback(void *user_data);
+        static FLAC__StreamDecoderReadStatus readCallback(const FLAC__StreamDecoder *decoder, FLAC__byte buffer[], size_t *bytes, void *client_data);
+        static FLAC__StreamDecoderSeekStatus seekCallback(const FLAC__StreamDecoder *decoder, FLAC__uint64 absolute_byte_offset, void *client_data);
+        static FLAC__StreamDecoderTellStatus tellCallback(const FLAC__StreamDecoder *decoder, FLAC__uint64 *absolute_byte_offset, void *client_data);
+        static FLAC__StreamDecoderLengthStatus lengthCallback(const FLAC__StreamDecoder *decoder, FLAC__uint64 *stream_length, void *client_data);
+        static FLAC__bool eofCallback(const FLAC__StreamDecoder *decoder, void *client_data);
+        static FLAC__StreamDecoderWriteStatus writeCallback(const FLAC__StreamDecoder *decoder, const FLAC__Frame *frame, const FLAC__int32 *const buffer[], void *client_data);
+        static void metadataCallback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data);
+        static void errorCallback(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data);
 
         QFile file;
 
@@ -54,10 +58,10 @@ class QALFlacAudioDecoder::Private
         FLAC__StreamDecoder *flacStreamDecoder;
 };
 
-sf_count_t
-QALFlacAudioDecoder::Private::fileLengthCallback(void *user_data)
+FLAC__StreamDecoderLengthStatus
+QALFlacAudioDecoder::Private::lengthCallback(const FLAC__StreamDecoder *decoder, FLAC__uint64 *stream_length, void *client_data)
 {
-    return reinterpret_cast<QALFlacAudioDecoder::Private*>(user_data)->file.size();
+    reinterpret_cast<QALFlacAudioDecoder::Private*>(user_data)->file.size();
 }
 
 sf_count_t
@@ -138,15 +142,18 @@ QALFlacAudioDecoder::open(const QString &fileName)
         return false;
     }
 
-    SF_INFO sfInfo;
-    sfInfo.format = 0;
+    if (FLAC__stream_decoder_init_stream(d->flacStreamDecoder, &d->readCallback, &d->seekCallback,
+                                         d->tellCallback, d->lengthCallback, d->eofCallback, d->writeCallback,
+                                         d->metadataCallback, d->errorCallback, d) == FLAC__STREAM_DECODER_INIT_STATUS_OK)
+    {   
+        if(InitFlac())
+        {   
+            // all ok
+            return;
+        }   
 
-    SF_VIRTUAL_IO sfVirtualIO;
-    sfVirtualIO.get_filelen = &d->fileLengthCallback;
-    sfVirtualIO.seek = &d->seekCallback;
-    sfVirtualIO.read = &d->readCallback;
-    sfVirtualIO.write = 0;
-    sfVirtualIO.tell = &d->tellCallback;
+        FLAC__stream_decoder_finish(flacFile);
+    }   
 
     if ((d->sndFile = sf_open_virtual(&sfVirtualIO, SFM_READ, &sfInfo, d)) == 0) {
         qWarning() << Q_FUNC_INFO << "Failed to open the file" << fileName.toUtf8().constData() << "for decoding:" << sf_strerror(d->sndFile);
