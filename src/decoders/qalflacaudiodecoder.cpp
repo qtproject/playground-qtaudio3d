@@ -62,6 +62,8 @@ QALFlacAudioDecoder::Private::readCallback(const FLAC__StreamDecoder *decoder, F
 FLAC__StreamDecoderSeekStatus
 QALFlacAudioDecoder::Private::seekCallback(const FLAC__StreamDecoder *decoder, FLAC__uint64 absolute_byte_offset, void *client_data)
 {
+    Q_UNUSED(decoder)
+
     if (reinterpret_cast<QALFlacAudioDecoder::Private*>(client_data)->file.seek(absolute_byte_offset) == false) {
          qWarning() << Q_FUNC_INFO << "Failed to seek in the file";
          return FLAC__STREAM_DECODER_SEEK_STATUS_ERROR;
@@ -70,10 +72,14 @@ QALFlacAudioDecoder::Private::seekCallback(const FLAC__StreamDecoder *decoder, F
     return FLAC__STREAM_DECODER_SEEK_STATUS_OK;
 }
 
-sf_count_t
-QALFlacAudioDecoder::Private::tellCallback(void *user_data)
+FLAC__StreamDecoderTellStatus
+QALFlacAudioDecoder::Private::tellCallback(const FLAC__StreamDecoder *decoder, FLAC__uint64 *absolute_byte_offset, void *client_data)
 {
-    return reinterpret_cast<QALFlacAudioDecoder::Private*>(user_data)->file.pos();
+    Q_UNUSED(decoder)
+
+    *absolute_path_offset = reinterpret_cast<QALFlacAudioDecoder::Private*>(client_data)->file.pos();
+
+    return FLAC__STREAM_DECODER_TELL_STATUS_OK;
 }
 
 FLAC__StreamDecoderLengthStatus
