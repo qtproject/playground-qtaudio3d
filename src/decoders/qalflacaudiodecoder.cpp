@@ -129,11 +129,17 @@ QALFlacAudioDecoder::Private::writeCallback(const FLAC__StreamDecoder *decoder, 
 void
 QALFlacAudioDecoder::Private::metadataCallback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data)
 {
+    Q_UNUSED(decoder)
+    Q_UNUSED(metadata)
+    Q_UNUSED(client_data)
 }
 
 void
 QALFlacAudioDecoder::Private::errorCallback(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data)
 {
+    Q_UNUSED(decoder)
+    Q_UNUSED(status)
+    Q_UNUSED(client_data)
 }
 
 QALFlacAudioDecoder::QALFlacAudioDecoder()
