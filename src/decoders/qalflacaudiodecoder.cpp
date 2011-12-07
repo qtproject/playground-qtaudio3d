@@ -109,7 +109,15 @@ QALFlacAudioDecoder::Private::lengthCallback(const FLAC__StreamDecoder *decoder,
 {
     Q_UNUSED(decoder)
 
-    *stream_length = reinterpret_cast<QALFlacAudioDecoder::Private*>(client_data)->file.size();
+    QFile &tmpFile = reinterpret_cast<QALFlacAudioDecoder::Private*>(client_data)->file;
+    tmpFile.unsetError();
+
+    *stream_length = tmpFile.size();
+
+    if (tmpFile.error() != QFile::NoError) {
+        qWarning() << Q_FUNC_INFO << "Failed to get the total length of the stream in bytes:" << tmpFile.errorString();
+        return FLAC__STREAM_DECODER_LENGTH_STATUS_ERROR;
+    }
 
     return FLAC__STREAM_DECODER_LENGTH_STATUS_OK;
 }
