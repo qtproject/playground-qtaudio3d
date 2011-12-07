@@ -109,6 +109,9 @@ QALFlacAudioDecoder::Private::lengthCallback(const FLAC__StreamDecoder *decoder,
 FLAC__bool
 QALFlacAudioDecoder::Private::eofCallback(const FLAC__StreamDecoder *decoder, void *client_data)
 {
+    Q_UNUSED(decoder)
+
+    return reinterpret_cast<QALFlacAudioDecoder::Private*>(client_data)->file.atEnd();
 }
 
 FLAC__StreamDecoderWriteStatus
