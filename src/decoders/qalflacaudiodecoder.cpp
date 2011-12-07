@@ -106,6 +106,27 @@ QALFlacAudioDecoder::Private::lengthCallback(const FLAC__StreamDecoder *decoder,
     return FLAC__STREAM_DECODER_LENGTH_STATUS_OK;
 }
 
+FLAC__bool
+QALFlacAudioDecoder::Private::eofCallback(const FLAC__StreamDecoder *decoder, void *client_data)
+{
+}
+
+FLAC__StreamDecoderWriteStatus
+QALFlacAudioDecoder::Private::writeCallback(const FLAC__StreamDecoder *decoder, const FLAC__Frame *frame,
+                                             const FLAC__int32 *const buffer[], void *client_data)
+{
+}
+
+void
+QALFlacAudioDecoder::Private::metadataCallback(const FLAC__StreamDecoder *decoder, const FLAC__StreamMetadata *metadata, void *client_data)
+{
+}
+
+void
+QALFlacAudioDecoder::Private::errorCallback(const FLAC__StreamDecoder *decoder, FLAC__StreamDecoderErrorStatus status, void *client_data)
+{
+}
+
 QALFlacAudioDecoder::QALFlacAudioDecoder()
     : d(new Private)
 {
