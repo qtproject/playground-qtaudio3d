@@ -38,6 +38,7 @@ public:
     virtual bool open(const QString &fileName) = 0;
     virtual qint64 pos() = 0;
     virtual bool seek(qint64 pos) = 0;
+    virtual bool rewind();
     virtual bool close() = 0;
 
     virtual void setEncodedData(const QByteArray &encodedData) = 0;

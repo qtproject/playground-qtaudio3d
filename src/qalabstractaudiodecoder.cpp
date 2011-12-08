@@ -31,3 +31,8 @@ QALAbstractAudioDecoder::~QALAbstractAudioDecoder()
 {
 }
 
+bool
+QALAbstractAudioDecoder::rewind()
+{
+    return seek(0);
+}
