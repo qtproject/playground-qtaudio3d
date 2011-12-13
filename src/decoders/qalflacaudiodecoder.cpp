@@ -266,7 +266,7 @@ QALFlacAudioDecoder::decodeData(char *decodedData, qint64 maxlen)
         && FLAC__stream_decoder_reset(d->flacStreamDecoder) == false)
         {
             qWarning() << Q_FUNC_INFO << "Failed to allocate memory while resetting before decoding";;
-            return false;
+            return -1;
         }
     }
 
