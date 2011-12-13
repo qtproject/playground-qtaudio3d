@@ -23,6 +23,7 @@
 #include <QtCore/QString>
 #include <QtCore/QUrl>
 #include <QtCore/QDebug>
+#include <QtCore/QtGlobal>
 
 #include <FLAC/stream_decoder.h>
 
@@ -263,12 +264,29 @@ qint64
 QALFlacAudioDecoder::decodeData(char *decodedData, qint64 maxlen)
 {
     if (FLAC__stream_decoder_get_state(d->flacStreamDecoder) == FLAC__STREAM_DECODER_SEEK_ERROR
-        && FLAC__stream_decoder_reset(d->flacStreamDecoder) == false)
+        && FLAC__stream_decoder_reset(d->flacStreamDecoder) == false) {
         {
             qWarning() << Q_FUNC_INFO << "Failed to allocate memory while resetting before decoding";;
             return -1;
         }
     }
 
-    return sf_readf_short(d->sndFile, reinterpret_cast<short*>(decodedData), maxlen);
+    int tmplen = 0;
+
+    if (d->initialData.size() > 0)
+    {   
+        tmplen = qMin(qint64(d->initialData.size()), maxlen);
+        decodedData = reinterpret_cast<char*>(d->initialData.mid(0, tmplen).data());
+        d->initialData.remove(0, tmplen);
+    }   
+
+    while (tmplen < maxlen)
+    {   
+        if (FLAC__stream_decoder_process_single(d->flacStreamDecoder) == false
+            || FLAC__stream_decoder_get_state(d->flacStreamDecoder) == FLAC__STREAM_DECODER_END_OF_STREAM) {
+            break;
+        }
+    }   
+
+    return tmplen;
 }
