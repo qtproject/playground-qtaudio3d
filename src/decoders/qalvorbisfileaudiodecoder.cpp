@@ -117,18 +117,6 @@ QALVorbisFileAudioDecoder::~QALVorbisFileAudioDecoder()
 }
 
 bool
-QALVorbisFileAudioDecoder::open(const QFile &file)
-{
-    return open(file.fileName());
-}
-
-bool
-QALVorbisFileAudioDecoder::open(const QUrl &fileUrl)
-{
-    return open(fileUrl.toLocalFile());
-}
-
-bool
 QALVorbisFileAudioDecoder::open(const QString &fileName)
 {
     d->file.setFileName(fileName);

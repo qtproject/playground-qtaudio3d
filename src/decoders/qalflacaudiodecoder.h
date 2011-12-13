@@ -31,11 +31,12 @@ public:
     QALFlacAudioDecoder();
     virtual ~QALFlacAudioDecoder();
 
-    bool open(const QFile &file);
-    bool open(const QUrl &fileUrl);
     bool open(const QString &fileName);
+
     qint64 pos();
+
     bool seek(qint64 pos);
+
     bool close();
 
     void setEncodedData(const QByteArray &encodedData);

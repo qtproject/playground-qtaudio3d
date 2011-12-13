@@ -36,3 +36,15 @@ QALAbstractAudioDecoder::rewind()
 {
     return seek(0);
 }
+
+bool
+QALAbstractAudioDecoder::open(const QFile &file)
+{
+    return open(file.fileName());
+}
+
+bool
+QALAbstractAudioDecoder::open(const QUrl &fileUrl)
+{
+    return open(fileUrl.toLocalFile());
+}

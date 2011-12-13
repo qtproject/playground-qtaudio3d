@@ -112,18 +112,6 @@ QALSndFileAudioDecoder::~QALSndFileAudioDecoder()
 }
 
 bool
-QALSndFileAudioDecoder::open(const QFile &file)
-{
-    return open(file.fileName());
-}
-
-bool
-QALSndFileAudioDecoder::open(const QUrl &fileUrl)
-{
-    return open(fileUrl.toLocalFile());
-}
-
-bool
 QALSndFileAudioDecoder::open(const QString &fileName)
 {
     d->file.setFileName(fileName);
