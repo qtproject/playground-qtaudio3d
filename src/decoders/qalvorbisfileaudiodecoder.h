@@ -24,7 +24,7 @@
 
 #include "qalabstractaudiodecoder.h"
 
-class Q_OPENAL_EXPORT QALVorbisFileAudioDecoder : QALAbstractAudioDecoder
+class Q_OPENAL_EXPORT QALVorbisFileAudioDecoder : public QALAbstractAudioDecoder
 {
     //Q_DECLARE_PRIVATE(QALVorbisFileAudioDecoder)
 public:
@@ -45,7 +45,7 @@ public:
     int sampleRate() const;
     int sampleSize() const;
 
-    qint64 decode(char *decodedData, qint64 maxlen);
+    qint64 decodeData(char *decodedData, qint64 maxlen);
 
     private:
         class Private;

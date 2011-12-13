@@ -24,7 +24,7 @@
 
 #include "qalabstractaudiodecoder.h"
 
-class Q_OPENAL_EXPORT QALMpg123AudioDecoder : QALAbstractAudioDecoder
+class Q_OPENAL_EXPORT QALMpg123AudioDecoder : public QALAbstractAudioDecoder
 {
     //Q_DECLARE_PRIVATE(QALMpg123AudioDecoder)
 public:
@@ -45,7 +45,7 @@ public:
     int sampleRate() const;
     int sampleSize() const;
 
-    qint64 decode(char *decodedData, qint64 maxlen);
+    qint64 decodeData(char *decodedData, qint64 maxlen);
 
     private:
         class Private;

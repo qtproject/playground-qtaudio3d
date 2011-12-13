@@ -260,7 +260,7 @@ QALFlacAudioDecoder::sampleSize() const
 }
 
 qint64
-QALFlacAudioDecoder::decode(char *decodedData, qint64 maxlen)
+QALFlacAudioDecoder::decodeData(char *decodedData, qint64 maxlen)
 {
     if (FLAC__stream_decoder_get_state(d->flacStreamDecoder) == FLAC__STREAM_DECODER_SEEK_ERROR
         && FLAC__stream_decoder_reset(d->flacStreamDecoder) == false)

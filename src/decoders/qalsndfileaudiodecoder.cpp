@@ -193,7 +193,7 @@ QALSndFileAudioDecoder::sampleSize() const
 }
 
 qint64
-QALSndFileAudioDecoder::decode(char *decodedData, qint64 maxlen)
+QALSndFileAudioDecoder::decodeData(char *decodedData, qint64 maxlen)
 {
     return sf_readf_short(d->sndFile, reinterpret_cast<short*>(decodedData), maxlen);
 }

@@ -52,7 +52,7 @@ public:
     virtual int sampleSize() const = 0;
 
     virtual QByteArray decode(qint64 maxlen);
-    virtual qint64 decode(char *decodedData, qint64 maxlen) = 0;
+    virtual qint64 decodeData(char *decodedData, qint64 maxlen) = 0;
 };
 
 #endif

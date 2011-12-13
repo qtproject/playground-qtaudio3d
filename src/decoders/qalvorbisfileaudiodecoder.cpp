@@ -198,7 +198,7 @@ QALVorbisFileAudioDecoder::sampleSize() const
 }
 
 qint64
-QALVorbisFileAudioDecoder::decode(char *decodedData, qint64 maxlen)
+QALVorbisFileAudioDecoder::decodeData(char *decodedData, qint64 maxlen)
 {
 #if Q_BYTE_ORDER == Q_BIG_ENDIAN
     return ov_read(&d->oggVorbisFile, decodedData, maxlen, 1, 2, 1, &d->bitStream);
