@@ -51,6 +51,7 @@ class QALFlacAudioDecoder::Private
 
         QByteArray encodedData;
         FLAC__StreamDecoder *flacStreamDecoder;
+        QVector<ALubyte> initialData;
 };
 
 FLAC__StreamDecoderReadStatus
@@ -192,12 +193,19 @@ QALFlacAudioDecoder::open(const QString &fileName)
     if (FLAC__stream_decoder_init_stream(d->flacStreamDecoder, &d->readCallback, &d->seekCallback,
                                          d->tellCallback, d->lengthCallback, d->eofCallback, d->writeCallback,
                                          d->metadataCallback, d->errorCallback, d) == FLAC__STREAM_DECODER_INIT_STATUS_OK)
-    {   
-        if(InitFlac())
+    {
+        // outBytes = NULL;
+        // outMax = 0;
+        // outLen = 0;
+        while (d->initialData.size() == 0)
         {   
-            // all ok
-            return;
+            if (FLAC__stream_decoder_process_single(d->flacStreamDecoder) == false
+                || FLAC__stream_decoder_get_state(d->flacStreamDecoder) == FLAC__STREAM_DECODER_END_OF_STREAM)
+                break;
         }   
+
+        if (d->initialData.size() > 0)
+            return true;
 
         FLAC__stream_decoder_finish(d->flacStreamDecoder);
     }   
