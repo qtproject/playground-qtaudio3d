@@ -197,20 +197,6 @@ QALVorbisFileAudioDecoder::sampleSize() const
     return 16;
 }
 
-QByteArray
-QALVorbisFileAudioDecoder::decode(qint64 maxlen)
-{
-    QByteArray result;
-    result.reserve(maxlen);
-
-    char *decodedData = result.data();
-
-    if (maxlen != decode(decodedData, maxlen))
-        qWarning() << Q_FUNC_INFO << "Could not to decode all the data:" << maxlen;
-
-    return result;
-}
-
 qint64
 QALVorbisFileAudioDecoder::decode(char *decodedData, qint64 maxlen)
 {

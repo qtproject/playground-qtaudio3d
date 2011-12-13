@@ -45,7 +45,6 @@ public:
     int sampleRate() const;
     int sampleSize() const;
 
-    QByteArray decode(qint64 maxlen);
     qint64 decode(char *decodedData, qint64 maxlen);
 
     private:

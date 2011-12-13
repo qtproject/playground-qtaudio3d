@@ -259,20 +259,6 @@ QALFlacAudioDecoder::sampleSize() const
     return FLAC__stream_decoder_get_bits_per_sample(d->flacStreamDecoder);
 }
 
-QByteArray
-QALFlacAudioDecoder::decode(qint64 maxlen)
-{
-    QByteArray result;
-    result.reserve(maxlen);
-
-    char *decodedData = result.data();
-
-    if (maxlen != decode(decodedData, maxlen))
-        qWarning() << Q_FUNC_INFO << "Could not to decode all the data:" << maxlen;
-
-    return result;
-}
-
 qint64
 QALFlacAudioDecoder::decode(char *decodedData, qint64 maxlen)
 {

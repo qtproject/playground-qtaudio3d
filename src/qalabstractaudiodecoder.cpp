@@ -22,6 +22,7 @@
 #include <QtCore/QString>
 #include <QtCore/QFile>
 #include <QtCore/QUrl>
+#include <QtCore/QDebug>
 
 QALAbstractAudioDecoder::QALAbstractAudioDecoder()
 {
@@ -48,3 +49,18 @@ QALAbstractAudioDecoder::open(const QUrl &fileUrl)
 {
     return open(fileUrl.toLocalFile());
 }
+
+QByteArray
+QALAbstractAudioDecoder::decode(qint64 maxlen)
+{
+    QByteArray result;
+    result.reserve(maxlen);
+
+    char *decodedData = result.data();
+
+    if (maxlen != decode(decodedData, maxlen))
+        qWarning() << Q_FUNC_INFO << "Could not to decode all the data:" << maxlen;
+
+    return result;
+}
+

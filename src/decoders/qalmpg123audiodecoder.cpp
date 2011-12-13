@@ -136,18 +136,6 @@ QALMpg123AudioDecoder::~QALMpg123AudioDecoder()
 }
 
 bool
-QALMpg123AudioDecoder::open(const QFile &file)
-{
-    return open(file.fileName());
-}
-
-bool
-QALMpg123AudioDecoder::open(const QUrl &fileUrl)
-{
-    return open(fileUrl.toLocalFile());
-}
-
-bool
 QALMpg123AudioDecoder::open(const QString &fileName)
 {
     d->file.setFileName(fileName);
@@ -227,20 +215,6 @@ int
 QALMpg123AudioDecoder::sampleSize() const
 {
     return 16;
-}
-
-QByteArray
-QALMpg123AudioDecoder::decode(qint64 maxlen)
-{
-    QByteArray result;
-    result.reserve(maxlen);
-
-    char *decodedData = result.data();
-
-    if (maxlen != decode(decodedData, maxlen))
-        qWarning() << Q_FUNC_INFO << "Could not to decode all the data:" << maxlen;
-
-    return result;
 }
 
 qint64

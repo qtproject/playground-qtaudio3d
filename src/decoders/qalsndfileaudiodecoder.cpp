@@ -192,20 +192,6 @@ QALSndFileAudioDecoder::sampleSize() const
     return 16;
 }
 
-QByteArray
-QALSndFileAudioDecoder::decode(qint64 maxlen)
-{
-    QByteArray result;
-    result.reserve(maxlen);
-
-    char *decodedData = result.data();
-
-    if (maxlen != decode(decodedData, maxlen))
-        qWarning() << Q_FUNC_INFO << "Could not to decode all the data:" << maxlen;
-
-    return result;
-}
-
 qint64
 QALSndFileAudioDecoder::decode(char *decodedData, qint64 maxlen)
 {
