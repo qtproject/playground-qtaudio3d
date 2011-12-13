@@ -20,17 +20,18 @@
 #include "qalbufferformat.h"
 
 #include <QtCore/QString>
+#include <QtCore/QDebug>
 
 class QALBufferFormat::Private : public QSharedData
 {
 public:
     Private()
         : sampleType(QALBufferFormat::Unknown)
-        , frequency(-1) 
-        , sampleSize(-1) 
+        , frequency(-1)
+        , sampleSize(-1)
         , channels(QALBufferFormat::UnknownChannel)
-    {   
-    }   
+    {
+    }
 
     Private(const Private &other)
         : QSharedData(other)
@@ -39,11 +40,11 @@ public:
         , frequency(other.frequency)
         , sampleSize(other.sampleSize)
         , channels(other.channels)
-    {   
-    }   
+    {
+    }
 
     Private& operator=(const Private &other)
-    {   
+    {
         codec = other.codec;
         sampleType = other.sampleType;
         frequency = other.frequency;
@@ -156,5 +157,187 @@ void QALBufferFormat::setSampleType(QALBufferFormat::SampleType sampleType)
 QALBufferFormat::SampleType QALBufferFormat::sampleType() const
 {
     return d->sampleType;
+}
+
+ALenum sampleFormat(ALuint channels, ALuint bits, bool isFloat)
+{
+    ALenum format;
+    if(!isFloat)
+    {
+        if(bits == 8)
+        {
+            if (channels == 1) {
+                format = alGetEnumValue("AL_FORMAT_MONO8");
+                if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                    return format;
+            } else if (channels == 2) {
+                format = alGetEnumValue("AL_FORMAT_STEREO8");
+                if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                    return format;
+            }
+
+            if (alIsExtensionPresent("AL_EXT_MCFORMATS"))
+            {
+                switch (channels) {
+                case 4:
+                    format = alGetEnumValue("AL_FORMAT_QUAD8");
+                    if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                        return format;
+                    break;
+                case 6:
+                    format = alGetEnumValue("AL_FORMAT_51CHN8");
+                    if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                        return format;
+                    break;
+                case 7:
+                    format = alGetEnumValue("AL_FORMAT_61CHN8");
+                    if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                        return format;
+                    break;
+                case 8:
+                    format = alGetEnumValue("AL_FORMAT_71CHN8");
+                    if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                        return format;
+                    break;
+                default:
+                    break;
+                }
+            }
+
+            if (alIsExtensionPresent("AL_LOKI_quadriphonic"))
+            {
+                if (channels == 4) {
+                    format = alGetEnumValue("AL_FORMAT_QUAD8_LOKI");
+                    if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                        return format;
+                }
+            }
+
+            qWarning() << Q_FUNC_INFO << "Unsupported 8-bit channel count";
+            return AL_NONE;
+        }
+
+        if(bits == 16)
+        {
+            if (channels == 1) {
+                format = alGetEnumValue("AL_FORMAT_MONO16");
+                if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                    return format;
+            } else if (channels == 2) {
+                format = alGetEnumValue("AL_FORMAT_STEREO16");
+                if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                    return format;
+            }
+
+            if (alIsExtensionPresent("AL_EXT_MCFORMATS"))
+            {
+                switch (channels) {
+                case 4:
+                    format = alGetEnumValue("AL_FORMAT_QUAD16");
+                    if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                        return format;
+                    break;
+
+                case 6:
+                    format = alGetEnumValue("AL_FORMAT_51CHN16");
+                    if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                        return format;
+                    break;
+
+                case 7:
+                    format = alGetEnumValue("AL_FORMAT_61CHN16");
+                    if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                        return format;
+                    break;
+
+                case 8:
+                    format = alGetEnumValue("AL_FORMAT_71CHN16");
+                    if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                        return format;
+                    break;
+                }
+            }
+
+            if (alIsExtensionPresent("AL_LOKI_quadriphonic"))
+            {
+                if (channels == 4) {
+                    format = alGetEnumValue("AL_FORMAT_QUAD16_LOKI");
+                    if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                        return format;
+                }
+            }
+
+            qWarning() << Q_FUNC_INFO << "Unsupported 16-bit channel count";
+            return AL_NONE;
+        }
+
+        qWarning() << Q_FUNC_INFO << "Unsupported PCM bit depth";
+        return AL_NONE;
+    }
+
+    if(bits == 32 && alIsExtensionPresent("AL_EXT_FLOAT32"))
+    {
+        if (channels == 1) {
+            format = alGetEnumValue("AL_FORMAT_MONO_FLOAT32");
+            if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                return format;
+        } else if (channels == 2) {
+            format = alGetEnumValue("AL_FORMAT_STEREO_FLOAT32");
+            if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                return format;
+        }
+
+        if (alIsExtensionPresent("AL_EXT_MCFORMATS"))
+        {
+            switch (channels) {
+            case 4:
+                format = alGetEnumValue("AL_FORMAT_QUAD32");
+                if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                    return format;
+                break;
+
+            case 6:
+                format = alGetEnumValue("AL_FORMAT_51CHN32");
+                if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                    return format;
+                break;
+
+            case 7:
+                format = alGetEnumValue("AL_FORMAT_61CHN32");
+                if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                    return format;
+                break;
+
+            case 8:
+                format = alGetEnumValue("AL_FORMAT_71CHN32");
+                if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                    return format;
+                break;
+            }
+        }
+
+        qWarning() << Q_FUNC_INFO << "Unsupported float32 channel count";
+        return AL_NONE;
+    }
+
+    if (bits == 64 && alIsExtensionPresent("AL_EXT_DOUBLE"))
+    {
+        if (channels == 1) {
+            format = alGetEnumValue("AL_FORMAT_MONO_DOUBLE_EXT");
+            if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                return format;
+        } else if (channels == 2) {
+            format = alGetEnumValue("AL_FORMAT_STEREO_DOUBLE_EXT");
+                    if(alGetError() == AL_NO_ERROR && format != 0 && format != -1)
+                    return format;
+        }
+
+        qWarning() << Q_FUNC_INFO << "Unsupported double channel count";
+        return AL_NONE;
+    }
+
+    qWarning() << Q_FUNC_INFO << "Unsupported float bit depth";
+
+    return AL_NONE;
 }
 
