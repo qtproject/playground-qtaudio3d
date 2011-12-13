@@ -183,16 +183,16 @@ QALContext::cacheBuffer(const QString& filename)
 {
     ALuint buffer = d->loadedBuffers.value(filename, 0);
     if (!buffer) {
-        QALSndFileAudioDecoder qalSndAudioDecoder;
-        if (qalSndAudioDecoder.open(filename) == false)
+        QALSndFileAudioDecoder qalSndFileAudioDecoder;
+        if (qalSndFileAudioDecoder.open(filename) == false)
             return 0;
 
         QByteArray decodedData;
         QByteArray tmpData;
-        int maxlen = qalSndAudioDecoder.channels() * qalSndAudioDecoder.sampleRate() * qalSndAudioDecoder.sampleSize() / 8;
+        int maxlen = qalSndFileAudioDecoder.channels() * qalSndFileAudioDecoder.sampleRate() * qalSndFileAudioDecoder.sampleSize() / 8;
 
         forever {
-            tmpData = qalSndAudioDecoder.decode(maxlen);
+            tmpData = qalSndFileAudioDecoder.decode(maxlen);
             decodedData.append(tmpData);
             if (tmpData.size() != maxlen)
                 break;
@@ -210,8 +210,8 @@ QALContext::cacheBuffer(const QString& filename)
             return 0;
         };
 
-        int channels = qalSndAudioDecoder.channels();
-        int sampleSize = qalSndAudioDecoder.sampleSize();
+        int channels = qalSndFileAudioDecoder.channels();
+        int sampleSize = qalSndFileAudioDecoder.sampleSize();
         ALenum format;
 
         if (channels == 1) {
@@ -226,7 +226,7 @@ QALContext::cacheBuffer(const QString& filename)
                 format = AL_FORMAT_STEREO16;
         }
 
-        alBufferData(buffer, format, reinterpret_cast<const ALvoid*>(decodedData.constData()), decodedData.size(), qalSndAudioDecoder.sampleRate());
+        alBufferData(buffer, format, reinterpret_cast<const ALvoid*>(decodedData.constData()), decodedData.size(), qalSndFileAudioDecoder.sampleRate());
 
         if ((error = alGetError()) != AL_NO_ERROR) {
             qWarning() << Q_FUNC_INFO << "Failed to fill the buffer with audio data:" << alGetString(error);
